@@ -16,11 +16,11 @@ const Navbar = ({activeProp}: Props) => {
   ]
 
   return (
-    <div className='fixed bottom-0 w-full flex justify-center bg-white border-t-gray-400' >
+    <div className='fixed bottom-0 w-full flex justify-center bg-white' >
       <div className='gap-x-9 mx-2 my-3 flex justify-center w-max' >
         {buttons.map((button, index) => (
           <Link
-            className={activeProp == index ? 'text-[#F1A095]' : 'text-gray-400 hover:text-[#F1A095] duration-100'}
+            className={activeProp == index ? 'text-salmon' : 'text-lightgrey hover:text-salmon duration-100'}
             key={button.href}
             href={button.href}
             onClick={() => activeProp = index}
