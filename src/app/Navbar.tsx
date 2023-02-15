@@ -1,6 +1,4 @@
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
 import { FiHome, FiActivity, FiCompass, FiUsers, FiUser } from 'react-icons/fi'
 
 interface Props {
@@ -8,9 +6,6 @@ interface Props {
 }
 
 const Navbar = ({activeProp}: Props) => {
-  //const router = useRouter()
-  //const [activeIndex, setActiveIndex] = useState<number>(0)
-
   const iconSize = 35
   const buttons = [
     { href: '/', label: 'Hjem', icon: <FiHome size={iconSize} /> },
@@ -21,14 +16,13 @@ const Navbar = ({activeProp}: Props) => {
   ]
 
   return (
-    <div className='fixed bottom-0 w-full flex justify-center bg-white border-t-gray-400 border-t-[.75px]' >
+    <div className='fixed bottom-0 w-full flex justify-center bg-white border-t-gray-400' >
       <div className='gap-x-9 mx-2 my-3 flex justify-center w-max' >
         {buttons.map((button, index) => (
           <Link
-            className={activeProp == index ? 'text-[#F1A095]' : 'text-gray-400'}
+            className={activeProp == index ? 'text-[#F1A095]' : 'text-gray-400 hover:text-[#F1A095] duration-100'}
             key={button.href}
             href={button.href}
-            /*active={activeIndex === index}*/
             onClick={() => activeProp = index}
           >
             <div className='flex flex-col items-center justify-center' >
