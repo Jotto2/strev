@@ -4,3 +4,17 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'sykepleien.no',
+        port: '',
+        pathname: '/account123/**',
+      },
+    ],
+  },
+}
