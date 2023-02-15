@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div>
       <h1>Strev</h1>
-      <Navbar />
+      <Navbar activeProp={0} />
     </div>
   )
 }
