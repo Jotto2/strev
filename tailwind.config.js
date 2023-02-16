@@ -16,6 +16,7 @@ module.exports = {
         'lightblue': '#98E1EE',
         'purple': '#8980F0',
         'lightgrey': '#BDBEC2',
+        'darkgrey': '#747474',
         'background': '#F5F6FA',
         'dark': '#2C2F3A',
       },
@@ -23,6 +24,9 @@ module.exports = {
         'nunito': ['Nunito', 'sans-serif'],
         'lato': ['Lato', 'sans-serif'],
       },
+      dropShadow: {
+        'box': '0 10px 10px rgba(117, 123, 183, .1)',
+      }
     },
     fontSize: {
       sm: '0.75rem',
