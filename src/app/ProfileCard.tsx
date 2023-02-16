@@ -3,11 +3,14 @@ import { useState, useCallback, useContext } from "react";
 import { UserContext } from "../lib/context";
 import Image from "next/image";
 
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ProfileCard = () => {
   const { user, username } = useContext(UserContext); // vet ikke hvordan dette funker enda
 
   const [editMode, setEditMode] = useState(false);
-  const [profileUsername, setProfileUsername] = useState(username); // TODO hent inn brukernavn fra backend
+  const [profileUsername, setProfileUsername] = useState(''); // TODO hent inn brukernavn fra backend
   const [profileFullName, setprofileFullName] = useState(''); // TODO hent inn fullt navn fra backend
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -27,6 +30,7 @@ const ProfileCard = () => {
   };
 
   const handleSaveProfile = () => {
+    Math.random() < 0.5 ? toast.success('Endringer lagret', {}) : toast.error('Endringer ikke lagret', {});
     setEditMode(false);
     // TODO perform logic to save the edited profile data
   };
@@ -38,8 +42,19 @@ const ProfileCard = () => {
 
   return (
     <div className="rounded-2xl bg-white max-w-md mx-auto p-6 mt-20 drop-shadow-box">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        transition={Slide}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        theme="light"
+      />
       {editMode ? (
-        <div className="mb-5"> {/* EDIT PROFILE */}
+        <div> {/* EDIT PROFILE */}
           <div>
             {selectedImage ? (
               <div>
@@ -63,7 +78,7 @@ const ProfileCard = () => {
                 />
                 <div className="flex justify-center">
                   <button
-                    className="text-center text-salmon p-3"
+                    className="text-center text-salmon p-3 hover:text-darksalmon duration-100"
                     onClick={() => setSelectedImage(null)}
                   >
                     Fjern bilde
@@ -83,7 +98,7 @@ const ProfileCard = () => {
 
             <label
               htmlFor="file-upload"
-              className=" mb-4 py-3 relative cursor-pointer bg-salmon text-white text-md text-left rounded-md w-full inline-flex items-center mt-8"
+              className=" mb-4 py-3 relative cursor-pointer bg-salmon text-white text-md text-left rounded-md w-full inline-flex items-center mt-8 drop-shadow-box hover:bg-darksalmon duration-100"
             >
               <span className="pl-4">Last opp bilde</span>
 
@@ -114,7 +129,7 @@ const ProfileCard = () => {
             <input
               className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full outline-none"
               type="text"
-              value={profileUsername}
+              defaultValue={profileUsername}
             />{/* TODO placeholder={username} */}
           </div>
           <div className="mb-5">
@@ -122,21 +137,21 @@ const ProfileCard = () => {
             <input
               className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full outline-none"
               type="text"
-              value={profileFullName}
+              defaultValue={profileFullName}
               />{/* TODO placeholder={fullt navn} */}
           </div>
           <div className="flex justify-center space-x-2">
             <button
-              className="bg-salmon text-white text-base rounded-md w-full p-2 drop-shadow-box"
-              onClick={handleSaveProfile}
-            >
-              Lagre endringer
-            </button>
-            <button
-              className="bg-white text-salmon text-base rounded-md w-full p-2 border border-salmon drop-shadow-box"
+              className="bg-white text-salmon text-base rounded-md w-full p-2 border border-salmon drop-shadow-box hover:bg-background duration-100"
               onClick={handleCancelEdit}
             >
               Avbryt
+            </button>
+            <button
+              className="bg-salmon text-white text-base rounded-md w-full p-2 drop-shadow-box hover:bg-darksalmon duration-100"
+              onClick={handleSaveProfile}
+            >
+              Lagre endringer
             </button>
           </div>
         </div>
@@ -149,7 +164,7 @@ const ProfileCard = () => {
             width={160}
             alt={''}
           />
-          <div className="mb-5">
+          <div className="mb-5 mt-8">
             <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
             <span className="text-2xl text-darkgrey">@anders</span> {/* TODO logikk */}
           </div>
@@ -159,7 +174,7 @@ const ProfileCard = () => {
           </div>
           <div className="flex justify-center">
             <button
-              className="bg-salmon text-white text-base rounded-md w-full p-2 drop-shadow-box"
+              className="bg-salmon text-white text-base rounded-md w-full p-2 drop-shadow-box hover:bg-darksalmon duration-100"
               onClick={handleEditProfile}
             >
               Rediger profil

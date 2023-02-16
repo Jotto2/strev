@@ -13,6 +13,7 @@ module.exports = {
       colors: {
         'darkblue': '#4F597E',
         'salmon': '#F1A095',
+        'darksalmon': '#C78379',
         'lightblue': '#98E1EE',
         'purple': '#8980F0',
         'lightgrey': '#BDBEC2',
