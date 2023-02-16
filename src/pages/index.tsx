@@ -13,6 +13,8 @@ export default function Home() {
     <div>
       <h1>Hjem</h1>
       <Navbar activeProp={0} />
+      <Activity />
+      <CreateActivity />
     </div>
   )
 }
