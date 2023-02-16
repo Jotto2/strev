@@ -1,14 +1,18 @@
 import Cropper from 'react-easy-crop';
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
+import { UserContext } from "../lib/context";
+import Image from "next/image";
 
 const ProfileCard = () => {
+  const { user, username } = useContext(UserContext); // vet ikke hvordan dette funker enda
+
   const [editMode, setEditMode] = useState(false);
-  const [username, setUsername] = useState("Brukernavn");
-  const [fullName, setFullName] = useState("Fullt navn");
+  const [profileUsername, setProfileUsername] = useState(username); // TODO hent inn brukernavn fra backend
+  const [profileFullName, setprofileFullName] = useState(''); // TODO hent inn fullt navn fra backend
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  /*const [crop, setCrop] = useState({ x: 0, y: 0 });
   const onCropChange = (crop) => {
     setCrop(crop);
   };
@@ -16,7 +20,7 @@ const ProfileCard = () => {
   const [zoom, setZoom] = useState(1);
   const onZoomChange = (zoom) => {
     setZoom(zoom);
-  };
+  };*/
 
   const handleEditProfile = () => {
     setEditMode(true);
@@ -50,9 +54,12 @@ const ProfileCard = () => {
                   onCropChange={onCropChange}
                   onZoomChange={onZoomChange}
                 />*/}
-                <img
-                  className="w-40 h-40 mx-auto relative -top-16 rounded-full"
+                <Image
+                  className='w-40 h-40 mx-auto relative rounded-full'
                   src={URL.createObjectURL(selectedImage)}
+                  height={160}
+                  width={160}
+                  alt={''}
                 />
                 <div className="flex justify-center">
                   <button
@@ -64,16 +71,19 @@ const ProfileCard = () => {
                 </div>
               </div>
             ) : (
-              <img
-                className="w-40 mx-auto relative -top-16 rounded-full"
-                src="./avatar.png" // TODO: Replace with user's profile picture
+              <Image
+                className='w-40 h-40 mx-auto relative rounded-full'
+                src={'/avatar.png'}
+                height={160}
+                width={160}
+                alt={''}
               />
             )
           }
 
             <label
               htmlFor="file-upload"
-              className=" mb-4 py-3 relative cursor-pointer bg-salmon text-white text-md text-left rounded-md w-full inline-flex items-center"
+              className=" mb-4 py-3 relative cursor-pointer bg-salmon text-white text-md text-left rounded-md w-full inline-flex items-center mt-8"
             >
               <span className="pl-4">Last opp bilde</span>
 
@@ -89,22 +99,30 @@ const ProfileCard = () => {
                 }}
               />
               <div className="ml-auto pr-5">
-                <img src="./Upload.png" className="h-4"></img>
+                <Image
+                  className='w-4 h-4'
+                  src={'/Upload.png'}
+                  height={16}
+                  width={16}
+                  alt={''}
+                />
               </div>
             </label>
           </div>
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
             <input
-              className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full"
+              className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full outline-none"
               type="text"
+              value={profileUsername}
             />{/* TODO placeholder={username} */}
           </div>
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">Fullt navn</span>
             <input
-              className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full"
+              className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full outline-none"
               type="text"
+              value={profileFullName}
               />{/* TODO placeholder={fullt navn} */}
           </div>
           <div className="flex justify-center space-x-2">
@@ -124,16 +142,19 @@ const ProfileCard = () => {
         </div>
       ) : (
         <div> {/* PROFILE */}
-          <img
-            className="w-40 mx-auto relative -top-16 border-full"
-            src="./avatar.png"
+          <Image
+            className='w-40 h-40 mx-auto relative rounded-full'
+            src={'/avatar.png'}
+            height={160}
+            width={160}
+            alt={''}
           />
           <div className="mb-5">
-            <span className="text-xl text-lightgrey font-bold block">{username}</span>
+            <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
             <span className="text-2xl text-darkgrey">@anders</span> {/* TODO logikk */}
           </div>
           <div className="mb-5">
-            <span className="text-xl text-lightgrey font-bold block">{fullName}</span>
+            <span className="text-xl text-lightgrey font-bold block">Fullt navn</span>
             <span className="text-2xl text-darkgrey">Anders blabla</span> {/* TODO logikk */}
           </div>
           <div className="flex justify-center">
