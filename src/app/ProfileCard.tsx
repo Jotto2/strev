@@ -10,8 +10,8 @@ const ProfileCard = () => {
   const { user, username } = useContext(UserContext); // vet ikke hvordan dette funker enda
 
   const [editMode, setEditMode] = useState(false);
-  const [profileUsername, setProfileUsername] = useState(''); // TODO hent inn brukernavn fra backend
-  const [profileFullName, setprofileFullName] = useState(''); // TODO hent inn fullt navn fra backend
+  const [profileUsername, setProfileUsername] = useState('andersro'); // TODO hent inn brukernavn fra backend
+  const [profileFullName, setprofileFullName] = useState('Anders Rodem'); // TODO hent inn fullt navn fra backend
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -26,6 +26,7 @@ const ProfileCard = () => {
   };*/
 
   const handleEditProfile = () => {
+    setSelectedImage(null);
     setEditMode(true);
   };
 
@@ -98,7 +99,7 @@ const ProfileCard = () => {
 
             <label
               htmlFor="file-upload"
-              className=" mb-4 py-3 relative cursor-pointer bg-salmon text-white text-md text-left rounded-md w-full inline-flex items-center mt-8 drop-shadow-box hover:bg-darksalmon duration-100"
+              className=" mb-4 py-3 relative text-base cursor-pointer bg-salmon text-white text-left rounded-md w-full inline-flex items-center mt-8 drop-shadow-box hover:bg-darksalmon duration-100"
             >
               <span className="pl-4">Last opp bilde</span>
 
@@ -166,11 +167,11 @@ const ProfileCard = () => {
           />
           <div className="mb-5 mt-8">
             <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
-            <span className="text-2xl text-darkgrey">@anders</span> {/* TODO logikk */}
+            <span className="text-2xl text-darkgrey">@andersro</span> {/* TODO logikk */}
           </div>
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">Fullt navn</span>
-            <span className="text-2xl text-darkgrey">Anders blabla</span> {/* TODO logikk */}
+            <span className="text-2xl text-darkgrey">Anders Rodem</span> {/* TODO logikk */}
           </div>
           <div className="flex justify-center">
             <button
