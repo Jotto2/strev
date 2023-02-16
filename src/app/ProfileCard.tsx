@@ -35,7 +35,7 @@ const ProfileCard = () => {
   return (
     <div className="rounded-2xl bg-white max-w-md mx-auto p-6 mt-20 drop-shadow-box">
       {editMode ? (
-        <div className="mb-5">
+        <div className="mb-5"> {/* EDIT PROFILE */}
           <div>
             {selectedImage ? (
               <div>
@@ -98,14 +98,14 @@ const ProfileCard = () => {
             <input
               className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full"
               type="text"
-            />
+            />{/* TODO placeholder={username} */}
           </div>
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">Fullt navn</span>
             <input
               className="text-lg font-normal text-darkgrey bg-background rounded-xl p-3 w-full"
               type="text"
-            />
+              />{/* TODO placeholder={fullt navn} */}
           </div>
           <div className="flex justify-center space-x-2">
             <button
@@ -123,18 +123,18 @@ const ProfileCard = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div> {/* PROFILE */}
           <img
             className="w-40 mx-auto relative -top-16 border-full"
             src="./avatar.png"
           />
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">{username}</span>
-            <span className="text-2xl text-darkgrey">@anders</span>
+            <span className="text-2xl text-darkgrey">@anders</span> {/* TODO logikk */}
           </div>
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">{fullName}</span>
-            <span className="text-2xl text-darkgrey">Anders blabla</span>
+            <span className="text-2xl text-darkgrey">Anders blabla</span> {/* TODO logikk */}
           </div>
           <div className="flex justify-center">
             <button
