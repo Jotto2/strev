@@ -1,4 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+
+@layer base{
+    h1, h2, h3, h4, h5, h6, span, input, label{
+        @apply font-nunito font-semibold;
+        
+    }
+    p {
+        @apply font-lato;
+    }
+    button {
+        @apply  font-nunito font-bold; 
+    }
+}
 
