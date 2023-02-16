@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useContext } from "react";
 import { FiHome, FiActivity, FiCompass, FiUsers, FiUser } from "react-icons/fi";
 import { UserContext } from "../lib/context";
 
