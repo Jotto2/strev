@@ -1,9 +1,10 @@
 import Navbar from '@/app/Navbar'
+import ProfileCard from '@/app/ProfileCard'
 
 export default function profil() {
   return (
     <div>
-      <h1>Profil</h1>
+      <ProfileCard />
       <Navbar activeProp={4} />
     </div>
   )
