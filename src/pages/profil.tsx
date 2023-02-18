@@ -1,10 +1,12 @@
 import Navbar from '@/app/Navbar'
-import ProfileCard from '@/app/ProfileCard'
+import MyProfileCard from '@/app/MyProfileCard'
+import ExternalProfileCard from '@/app/ExternalProfileCard'
 
 export default function profil() {
   return (
     <div>
-      <ProfileCard />
+      <MyProfileCard />
+      <ExternalProfileCard />
       <Navbar activeProp={4} />
     </div>
   )

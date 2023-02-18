@@ -161,11 +161,11 @@ const MyProfileCard = () => {
           />
           <div className="mb-5 mt-8">
             <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
-            <span className="text-2xl text-darkgrey">@andersro</span> {/* TODO logikk */}
+            <span className="text-2xl text-darkgrey">@{profileUsername}</span> {/* TODO logikk */}
           </div>
           <div className="mb-5">
             <span className="text-xl text-lightgrey font-bold block">Fullt navn</span>
-            <span className="text-2xl text-darkgrey">Anders Rodem</span> {/* TODO logikk */}
+            <span className="text-2xl text-darkgrey">{profileFullName}</span> {/* TODO logikk */}
           </div>
           <div className="flex justify-center">
             <button

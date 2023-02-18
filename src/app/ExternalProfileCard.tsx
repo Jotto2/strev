@@ -38,7 +38,7 @@ const ExternalProfileCard = () => {
         />
         <div className="mb-5 mt-8">
           <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
-          <span className="text-2xl text-darkgrey">{username}</span> {/* TODO logikk */}
+          <span className="text-2xl text-darkgrey">@{username}</span> {/* TODO logikk */}
         </div>
         <div className="mb-5">
           <span className="text-xl text-lightgrey font-bold block">Fullt navn</span>
