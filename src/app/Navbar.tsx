@@ -9,7 +9,7 @@ interface Props {
 
 const Navbar = ({ activeProp }: Props) => {
   const { user, username } = useContext(UserContext);
-  const iconSize = 30;
+  const iconSize = 35;
   const buttons = [
     { href: "/", label: "Hjem", icon: <FiHome size={iconSize} /> },
     {
@@ -23,8 +23,8 @@ const Navbar = ({ activeProp }: Props) => {
   ];
 
   return (
-    <div className="fixed bottom-0 w-full flex justify-center bg-white">
-      <div className="gap-x-5 mx-2 my-3 flex justify-center w-max">
+    <div className="fixed bottom-0 w-full flex justify-center bg-white z-30">
+      <div className="gap-x-9 mx-2 my-3 flex justify-center w-max">
         {buttons.map((button, index) => (
           <Link
             className={
