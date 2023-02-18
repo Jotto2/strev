@@ -3,10 +3,10 @@ import { useState, useCallback, useContext } from "react";
 import { UserContext } from "../lib/context";
 import Image from "next/image";
 
-import { ToastContainer, toast, Slide } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ProfileCard = () => {
+const MyProfileCard = () => {
   const { user, username } = useContext(UserContext); // vet ikke hvordan dette funker enda
 
   const [editMode, setEditMode] = useState(false);
@@ -15,6 +15,7 @@ const ProfileCard = () => {
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
+  // CROPPING FUNKSJON
   /*const [crop, setCrop] = useState({ x: 0, y: 0 });
   const onCropChange = (crop) => {
     setCrop(crop);
@@ -42,18 +43,7 @@ const ProfileCard = () => {
   };
 
   return (
-    <div className="rounded-2xl bg-white max-w-md mx-auto p-6 mt-20 drop-shadow-box">
-      <ToastContainer
-        position="top-center"
-        autoClose={2000}
-        transition={Slide}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        theme="light"
-      />
+    <div className="rounded-2xl bg-white max-w-md mx-auto p-6 mt-32 drop-shadow-box">
       {editMode ? (
         <div> {/* EDIT PROFILE */}
           <div>
@@ -71,15 +61,16 @@ const ProfileCard = () => {
                   onZoomChange={onZoomChange}
                 />*/}
                 <Image
-                  className='w-40 h-40 mx-auto relative rounded-full'
+                  className='w-40 h-40 mx-auto relative rounded-full -mt-20'
                   src={URL.createObjectURL(selectedImage)}
                   height={160}
                   width={160}
                   alt={''}
+                  loading="lazy"
                 />
                 <div className="flex justify-center">
                   <button
-                    className="text-center text-salmon p-3 hover:text-darksalmon duration-100"
+                    className="text-center text-salmon pt-3 hover:text-darksalmon duration-100"
                     onClick={() => setSelectedImage(null)}
                   >
                     Fjern bilde
@@ -88,11 +79,12 @@ const ProfileCard = () => {
               </div>
             ) : (
               <Image
-                className='w-40 h-40 mx-auto relative rounded-full'
+                className='w-40 h-40 mx-auto relative rounded-full -mt-20'
                 src={'/avatar.png'}
                 height={160}
                 width={160}
                 alt={''}
+                loading="lazy"
               />
             )
           }
@@ -121,6 +113,7 @@ const ProfileCard = () => {
                   height={16}
                   width={16}
                   alt={''}
+                  loading="lazy"
                 />
               </div>
             </label>
@@ -159,11 +152,12 @@ const ProfileCard = () => {
       ) : (
         <div> {/* PROFILE */}
           <Image
-            className='w-40 h-40 mx-auto relative rounded-full'
+            className='w-40 h-40 mx-auto relative rounded-full -mt-20'
             src={'/avatar.png'}
             height={160}
             width={160}
             alt={''}
+            loading="lazy"
           />
           <div className="mb-5 mt-8">
             <span className="text-xl text-lightgrey font-bold block">Brukernavn</span>
@@ -187,4 +181,4 @@ const ProfileCard = () => {
   );
 };
 
-export default ProfileCard;
+export default MyProfileCard;
