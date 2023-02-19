@@ -3,7 +3,7 @@ import { UserContext } from "../lib/context";
 import Image from "next/image";
 
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const ExternalProfileCard = () => {
   // const { user, username } = useContext(UserContext); // vet ikke hvordan dette funker enda
