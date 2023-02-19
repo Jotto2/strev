@@ -23,7 +23,7 @@ const Navbar = ({ activeProp }: Props) => {
   ];
 
   return (
-    <div className="fixed bottom-0 w-full flex justify-center bg-white">
+    <div className="fixed bottom-0 w-full flex justify-center bg-white z-30">
       <div className="gap-x-9 mx-2 my-3 flex justify-center w-max">
         {buttons.map((button, index) => (
           <Link
