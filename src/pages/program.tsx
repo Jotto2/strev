@@ -1,4 +1,4 @@
-import Navbar from '@/app/Navbar'
+import Navbar from '@/components/Navbar'
 
 export default function Program() {
   return (
