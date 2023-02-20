@@ -5,7 +5,7 @@ import Image from "next/image";
 import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
-const ExternalProfileCard = () => {
+const ExternalProfileCard = ({user}) => {
   // const { user, username } = useContext(UserContext); // vet ikke hvordan dette funker enda
 
   const [isFollowing, setIsFollowing] = useState(false); // TODO hent inn fra backend
