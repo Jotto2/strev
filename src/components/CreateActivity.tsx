@@ -2,16 +2,43 @@ import next from "next";
 import Image from "next/image";
 import { useState } from "react";
 import { useRef } from "react";
+import { addDoc, collection } from "firebase/firestore";
+import { firestore, auth } from "@/lib/firebase";
+import { useRouter } from "next/router";
 
 const CreateActivity = () => {
-  const handleSubmit = () => {
-    //Her for å submitte form
+
+  const [title, setTitle] = useState("");
+  const [workoutType, setWorkoutType] = useState("");
+  const [desc, setDesc] = useState("");
+  const [days, setDays] = useState([]);
+  const [exerciseList, setExerciseList] = useState([{ tittel: "", sett: "" }]);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isPublic, setIsPublic] = useState(false);
+  const [followers] = useState([]);
+
+  const postsCollectionRef = collection(firestore, "activity");
+
+  const router = useRouter();
+
+  const createActivity = async () => {
+    await addDoc(postsCollectionRef, {
+      title,
+      author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+      workoutType,
+      days,
+      exerciseList,
+      selectedImage,
+      isPublic,
+      followers,
+    });
+    router.push("/");
   };
 
-  const [exerciseList, setExerciseList] = useState([{ exercise: "" }]);
+  
 
   const handleExerciseAdd = () => {
-    setExerciseList([...exerciseList, { exercise: "" }]);
+    setExerciseList([...exerciseList, { tittel: "", sett: "" }]);
   };
 
   const handleExerciseRemove = (index: number) => {
@@ -20,7 +47,7 @@ const CreateActivity = () => {
     setExerciseList(list);
   };
 
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+ 
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -33,6 +60,9 @@ const CreateActivity = () => {
               type="text"
               name="title"
               placeholder="Tittel"
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
             />
           </label>
 
@@ -40,16 +70,18 @@ const CreateActivity = () => {
             <select
               id="category"
               name="category"
-              value="Test"
-              defaultValue={"default"}
+             
               autoComplete="Velg treningstype"
               className="text-darkblue px-3 h-8 w-full bg-background rounded-md"
               placeholder="Kategori"
+              onChange={(event) => {
+                setWorkoutType(event.target.value);
+              }}
             >
-              <option value={"default"}>Velg treningstype</option>
-              <option>Styrke</option>
-              <option>Cardio</option>
-              <option>Bevegelse</option>
+              
+              <option value="styrke">Styrke</option>
+              <option value="cardio">Cardio</option>
+              <option value="bevegelse">Bevegelse</option>
             </select>
           </div>
 
@@ -59,6 +91,9 @@ const CreateActivity = () => {
               rows={3}
               name="title"
               placeholder="Beskrivelse"
+              onChange={(event) => {
+                setDesc(event.target.value);
+              }}
             />
           </label>
 
@@ -235,7 +270,9 @@ const CreateActivity = () => {
           ))}
 
           <label className="relative inline-flex items-center cursor-pointer mb-4">
-            <input type="checkbox" value="" className="sr-only peer"></input>
+            <input type="checkbox" value="" className="sr-only peer" onChange={(event) => {
+                setIsPublic(event.target.checked);
+              }}></input>
             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
               Offentlig innlegg
@@ -244,7 +281,7 @@ const CreateActivity = () => {
 
           <button
             className="bg-salmon text-white text-md rounded-md w-full p-2 "
-            onClick={handleSubmit}
+            onClick={createActivity}
           >
             Opprett aktivitet
           </button>

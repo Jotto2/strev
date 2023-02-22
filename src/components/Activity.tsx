@@ -1,11 +1,12 @@
 import next from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const Activity = () => {
-
+const Activity = ({post}) => {
 
     return (
       <div className='rounded-2xl bg-darkblue max-w-md mx-auto'>
+        <Link href={'/${post.id}'}>Trykk her for å gå til kortet</Link>
         <div className='grid grid-cols-2 pt-3 pb-2 px-3'>
           <h4 className='text-white text-sm'>4 followers</h4>
           <div className='flex justify-end'>
@@ -22,7 +23,7 @@ const Activity = () => {
           </div>
           <div className='col-span-2 flex items-center'>
             <div>
-              <h3 className='text-white text-xl -mt-2 truncate'>Aktivitetsnavn</h3>
+              <h3 className='text-white text-xl -mt-2 truncate'>Overskrift {post.title}</h3>
               <p className='text-white text-md truncate'>Her står det noe om økten</p>
             </div>
           </div>
