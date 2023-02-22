@@ -20,6 +20,8 @@ module.exports = {
         'darkgrey': '#747474',
         'background': '#F5F6FA',
         'dark': '#2C2F3A',
+        'blue': '#4185F5',
+        'darkblue': '#4F597E',
       },
       fontFamily: {
         'nunito': ['Nunito', 'sans-serif'],
@@ -38,6 +40,7 @@ module.exports = {
       '3xl': '1.953rem',
       '4xl': '2.441rem',
       '5xl': '3.052rem',
+      '9xl': '7.052rem',
     },
 
   },
