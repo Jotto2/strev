@@ -41,9 +41,10 @@ export default function ProgramPage() {
   return (
     <div className="pb-32">
     <Navbar activeProp={1}/>
+    <Link href="/opprett-program" className="bg-salmon text-white text-md rounded-md p-2">Lag nytt program</Link>
     <div className="max-w-md mx-auto">
       
-      <Link href="/opprett-program" className="bg-salmon text-white text-md rounded-md p-2">Lag nytt program</Link>
+      
 
       <h2 className="pt-5">Mine aktiviteter</h2>
       {activity.map((activity) => {
