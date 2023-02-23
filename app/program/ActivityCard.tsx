@@ -56,7 +56,7 @@ export default function ActivityCard({ activity }: any) {
     >
       {user.uid === activity.createdBy && isPublic === true ? (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm"> followers</h4>
+          <h4 className="text-white text-sm">{followedBy.length} followers</h4>
           <div className="flex justify-end pr-2">
             <h3 className="bg-yellow-100 rounded-full px-5 text-sm text-right">
               Delt
@@ -67,7 +67,7 @@ export default function ActivityCard({ activity }: any) {
         <div></div>
       ) : (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm"> followers</h4>
+          <h4 className="text-white text-sm">{followedBy.length} followers</h4>
           <div className="flex justify-end">
             <h4 className="text-white text-sm truncate">
               {activity.madeByName}
@@ -103,7 +103,7 @@ export default function ActivityCard({ activity }: any) {
           className="btn text-sm text-dark bg-white rounded-full"
           onClick={updateFollower}
         >
-          {isSubscribed ? "Unsubscribe" : "Subscribe"}
+          {isSubscribed ? "Følger" : "Følg"}
         </button>
 
         <button
