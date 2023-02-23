@@ -30,21 +30,30 @@ function Page() {
         <div className="text-salmon text-9xl font-nunito font-bold italic text-center">
           Strev
         </div>
-        
+
         <div className="absolute bottom-0 w-full mb-52 px-5">
           <div className="bg-salmon h-10 w-full flex text-white justify-center items-center rounded-md text-lato font-semibold mb-5 drop-shadow-box cursor-pointer hover:bg-darksalmon duration-200">
-          <form onSubmit={handleForm} className="form">
-  <button className="px-30 py-5" type="submit">Logg inn med Google</button>
-</form>
+            <form onSubmit={handleForm} className="form">
+              <button className="px-30 py-5" type="submit">
+                Logg inn med Google
+              </button>
+            </form>
             
-          
+          </div>
+          <div className="bg-white text-dark h-10 w-full flex text-white justify-center items-center rounded-md text-lato font-semibold mb-5 drop-shadow-box cursor-pointer hover:bg-lightgrey duration-200">
+            <form onSubmit={handleForm} className="form">
+              <button className="px-30 py-5" type="submit">
+                Registrer deg med Google
+              </button>
+            </form>
+            
           </div>
         </div>
+
+        
       </div>
     </div>
   );
 }
 
 export default Page;
-
-

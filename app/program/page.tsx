@@ -14,18 +14,33 @@ export const dynamic = "auto",
   revalidate = 0,
   fetchCache = "auto";
 
-  const auth = getAuth();
-  const user = auth.currentUser;
+const auth = getAuth();
+const user = auth.currentUser;
 
-  async function getProgram() {
-    const myCollection = collection(firestoreDB, "activity");
-    const querySnapshot = await getDocs(query(myCollection, where("createdBy", "==", user.uid)));
-    const myArray = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() }; // Add ID to data object
-    });
-    console.log(myArray);
-    return myArray;
-  }
+async function getProgram() {
+  const myCollection = collection(firestoreDB, "activity");
+  const querySnapshot = await getDocs(
+    query(myCollection, where("createdBy", "==", user.uid))
+  );
+  const myArray = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() };
+  });
+  console.log(myArray);
+  return myArray;
+}
+
+async function getFollowedActivities() {
+  const myCollection = collection(firestoreDB, "activity");
+  //TODO her må det legges til en where som sjekker om brukeren er følger av aktiviteten
+  const querySnapshot = await getDocs(
+    query(myCollection, where("createdBy", "==", user.uid))
+  );
+  const myArray = querySnapshot.docs.map((doc) => {
+    return { id: doc.id, ...doc.data() };
+  });
+  console.log(myArray);
+  return myArray;
+}
 
 export default function ProgramPage() {
   const [activity, setActivity] = useState([]);
@@ -40,27 +55,29 @@ export default function ProgramPage() {
 
   return (
     <div className="pb-32">
-    <Navbar activeProp={1}/>
-    <Link href="/opprett-program" className="bg-salmon text-white text-md rounded-md p-2">Lag nytt program</Link>
-    <div className="max-w-md mx-auto">
-      
-      
-
-      <h2 className="pt-5">Mine aktiviteter</h2>
-      {activity.map((activity) => {
-        return (
-          <div
-            className="p-3
+      <Navbar activeProp={1} />
+      <Link
+        href="/opprett-program"
+        className="bg-salmon text-white text-md rounded-md p-2"
+      >
+        Lag nytt program
+      </Link>
+      <div className="max-w-md mx-auto">
+        <h2 className="pt-5">Mine aktiviteter</h2>
+        {activity.map((activity) => {
+          return (
+            <div
+              className="p-3
           "
-          >
-            <ActivityCard key={activity.id} activity={activity} />
-          </div>
-        );
-      })}
+            >
+              <ActivityCard key={activity.id} activity={activity} />
+            </div>
+          );
+        })}
 
-<h2 className="pt-5">Aktiviteter du følger</h2>
+        <h2 className="pt-5">Aktiviteter du følger</h2>
+      </div>
+      {/* //TODO her må det legges til en liste med aktiviteter brukeren følger */}
     </div>
-   </div>
   );
 }
-

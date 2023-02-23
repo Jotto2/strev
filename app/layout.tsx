@@ -18,7 +18,6 @@ export default function RootLayout({
       <head />
       <body>
         <AuthContextProvider>
-          
           {children}
         </AuthContextProvider>
       </body>
