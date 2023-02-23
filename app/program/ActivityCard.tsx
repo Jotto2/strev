@@ -99,18 +99,26 @@ export default function ActivityCard({ activity }: any) {
       </div>
       <div className="grid grid-cols-2 gap-4 p-4">
         {/* //TODO Legg til sånn at farge og tekst endrer seg basert på status */}
-        <button className="" onClick={updateFollower}>
+        <button
+          className="btn text-sm text-dark bg-white rounded-full"
+          onClick={updateFollower}
+        >
           {isSubscribed ? "Unsubscribe" : "Subscribe"}
         </button>
 
-        <Link
-          href={`program/${activity.id}`}
-          className="btn text-sm text-white bg-salmon rounded-full"
+        <button
+          onClick={() => {
+            window.location.href = `program/${activity.id}`;
+          }}
+          className="py-2 btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
         >
-          <button className="btn text-sm text-white bg-salmon rounded-full">
-            Se hele
-          </button>
-        </Link>
+          <div className="flex flex-row justify-center items-center">
+            <div>Se hele</div>
+            <div className="ml-2">
+              <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+            </div>
+          </div>
+        </button>
       </div>
     </div>
   );
