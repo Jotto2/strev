@@ -20,7 +20,7 @@ export default function CreateActivity() {
   };
 
   const handleCheckboxChange = (event: any) => {
-    const day = event.target.name;
+    const day = event.target.value;
     const checked = event.target.checked;
   
     if (checked) {
@@ -41,7 +41,7 @@ export default function CreateActivity() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [days, setDays] = useState([{ day: "" }]);
+  const [days, setDays] = useState([]);
   const [exerciseList, setExerciseList] = useState([{ eTitle: "", eSet: "", eRep: "", eWeight: "" }]);
   const [isPublic, setIsPublic] = useState(false);
 
@@ -157,7 +157,7 @@ export default function CreateActivity() {
           <label className="">Dager</label>
           <div className="pt-3">
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Mandag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Mandag
@@ -166,7 +166,7 @@ export default function CreateActivity() {
           </div>
           <div>
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Tirsdag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Tirsdag
@@ -175,7 +175,7 @@ export default function CreateActivity() {
           </div>
           <div>
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Onsdag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Onsdag
@@ -184,7 +184,7 @@ export default function CreateActivity() {
           </div>
           <div>
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Torsdag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Torsdag
@@ -193,7 +193,7 @@ export default function CreateActivity() {
           </div>
           <div>
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Fredag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Fredag
@@ -202,7 +202,7 @@ export default function CreateActivity() {
           </div>
           <div>
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Lørdag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Lørdag
@@ -211,7 +211,7 @@ export default function CreateActivity() {
           </div>
           <div>
             <label className="relative inline-flex items-center cursor-pointer mb-4">
-              <input type="checkbox" value="" className="sr-only peer" onChange={handleCheckboxChange}></input>
+              <input type="checkbox" value="Søndag" className="sr-only peer" onChange={handleCheckboxChange}></input>
               <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:salmon rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-salmon"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Søndag
