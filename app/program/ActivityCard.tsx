@@ -56,7 +56,7 @@ export default function ActivityCard({ activity }: any) {
     >
       {user.uid === activity.createdBy && isPublic === true ? (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm">{followedBy.length} followers</h4>
+          <h4 className="text-white text-sm">{followedBy.length} følgere</h4>
           <div className="flex justify-end pr-2">
             <h3 className="bg-yellow-100 rounded-full px-5 text-sm text-right">
               Delt
@@ -67,7 +67,7 @@ export default function ActivityCard({ activity }: any) {
         <div></div>
       ) : (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm">{followedBy.length} followers</h4>
+          <h4 className="text-white text-sm">{followedBy.length} følgere</h4>
           <div className="flex justify-end">
             <h4 className="text-white text-sm truncate">
               {activity.madeByName}
@@ -91,35 +91,52 @@ export default function ActivityCard({ activity }: any) {
             <h3 className="text-white text-xl -mt-2 truncate">
               {activity.title}
             </h3>
-            <p className="text-white text-md">
-              {activity.description}
-            </p>
+            <p className="text-white text-md">{activity.description}</p>
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4 p-4">
-        {/* //TODO Legg til sånn at farge og tekst endrer seg basert på status */}
-        <button
-          className="btn text-sm text-dark bg-white rounded-full"
-          onClick={updateFollower}
-        >
-          {isSubscribed ? "Følger" : "Følg"}
-        </button>
 
-        <button
-          onClick={() => {
-            window.location.href = `program/${activity.id}`;
-          }}
-          className="py-2 btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
-        >
-          <div className="flex flex-row justify-center items-center">
-            <div>Se hele</div>
-            <div className="ml-2">
-              <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+      {/* //TODO Legg til sånn at farge og tekst endrer seg basert på status */}
+
+      {user.uid == createdBy ? (
+        <div className="grid grid-cols-1 gap-4 p-4">
+          <button
+            onClick={() => {
+              window.location.href = `program/${activity.id}`;
+            }}
+            className="py-2 btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
+          >
+            <div className="flex flex-row justify-center items-center">
+              <div>Se hele</div>
+              <div className="ml-2">
+                <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+              </div>
             </div>
-          </div>
-        </button>
-      </div>
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 p-4">
+          <button
+            className="btn text-sm text-dark bg-white rounded-full"
+            onClick={updateFollower}
+          >
+            {isSubscribed ? "Følger" : "Følg"}
+          </button>
+          <button
+            onClick={() => {
+              window.location.href = `program/${activity.id}`;
+            }}
+            className="py-2 btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
+          >
+            <div className="flex flex-row justify-center items-center">
+              <div>Se hele</div>
+              <div className="ml-2">
+                <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+              </div>
+            </div>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
