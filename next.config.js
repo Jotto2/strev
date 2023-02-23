@@ -6,6 +6,8 @@ const nextConfig = {
   },
 }
 
+//kommenterer her
+
 module.exports = nextConfig
 
 module.exports = {

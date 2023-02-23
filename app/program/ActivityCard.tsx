@@ -91,7 +91,7 @@ export default function ActivityCard({ activity }: any) {
             <h3 className="text-white text-xl -mt-2 truncate">
               {activity.title}
             </h3>
-            <p className="text-white text-md truncate">
+            <p className="text-white text-md">
               {activity.description}
             </p>
           </div>
