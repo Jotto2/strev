@@ -55,7 +55,6 @@ export default function CreateActivity() {
       days,
       exerciseList,
       isPublic,
-      followers: 0,
       createdAt: new Date(),
       createdBy: user.uid,
       imageURL: user.photoURL,
