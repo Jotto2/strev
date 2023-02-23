@@ -20,7 +20,7 @@ export const dynamic = "auto",
 
   async function getProgram() {
     const myCollection = collection(firestoreDB, "activity");
-    const querySnapshot = await getDocs(query(myCollection, where("createdBy", "!=", user.uid)));
+    const querySnapshot = await getDocs(query(myCollection, where("createdBy", "!=", user.uid), where("isPublic", "==", true)));
     const myArray = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() }; // Add ID to data object
     });
