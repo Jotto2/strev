@@ -44,7 +44,7 @@ export default function ProgramPage() {
     <div className="pb-32">
         <div className="max-w-md mx-auto">
             <h1 className="pt-5 pb-3 text-xl">Finn andre strevere og <br/>strevegrupper</h1>
-            <div className="relative text-darkgrey">
+            <div className="relative text-darkgrey pb-3">
                 <input type="text" placeholder="Søk etter andre strevere eller grupper" className="text-lg font-normal bg-white rounded-md p-3 w-full outline drop-shadow-box pr-10"/>
                 <BiSearch className="absolute right-0 top-0 mr-4 mt-3" size={20} />
             </div>

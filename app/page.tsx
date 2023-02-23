@@ -14,7 +14,11 @@ import { firebase_app } from "lib/firebase";
 import "styles/globals.css";
 import Navbar from "components/Navbar";
 
+
 export default function page() {
+
+
+  
   return (
     <div className="pb-32">
       

@@ -56,12 +56,19 @@ export default function ProgramPage() {
   return (
     <div className="pb-32">
       <Navbar activeProp={1} />
-      <Link
-        href="/opprett-program"
-        className="bg-salmon text-white text-md rounded-md p-2"
-      >
-        Lag nytt program
-      </Link>
+      <div className="">
+      <div className="max-w-md mx-auto pt-5">
+      <button
+              onClick={() => { window.location.href="/opprett-program" }}
+              className="bg-salmon mb-4 text-white text-md text-left rounded-2xl w-full p-1 py-5 inline-flex items-center"
+            >
+              <span className=" pl-5 text-xl">Lag nytt treningsprogram</span>
+              <div className="ml-auto pr-3">
+                <img src="./AddButton.png" className="h-8"></img>
+              </div>
+            </button>
+            </div>
+            </div>
       <div className="max-w-md mx-auto">
         <h2 className="pt-5">Mine aktiviteter</h2>
         {activity.map((activity) => {
