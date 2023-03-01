@@ -16,6 +16,7 @@ module.exports = {
         'darksalmon': '#C78379',
         'lightblue': '#98E1EE',
         'purple': '#8980F0',
+        'lightpurple': '#E5E3FC',
         'lightgrey': '#BDBEC2',
         'darkgrey': '#747474',
         'background': '#F5F6FA',
