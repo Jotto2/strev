@@ -48,16 +48,42 @@ export default function ActivityCard({ activity }: any) {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4 p-4">
-        <button className="btn text-sm text-dark bg-lightblue rounded-full py-1.5">
-          Følger
+      {/* <div className="grid grid-cols-2 gap-4 p-4">
+        <button className="btn text-sm text-dark bg-white rounded-full py-1.5">
+          Følg
         </button>
-        <Link href={`program/${activity.id}`} className="btn text-sm text-white bg-salmon rounded-full">
-        <button className="btn text-sm text-white bg-salmon rounded-full" >
-         Se hele
+        <Link href={`program/${activity.id}`} className="btn text-sm text-white bg-lightblue rounded-full"> 
+        <button className="btn text-sm text-dark bg-salmon rounded-full ml-20">
+        Se hele
         </button>
+
         </Link>
-      </div>
+      </div> */}
+      <div className="grid grid-cols-2 gap-4 p-4">
+  <button className="btn text-sm text-dark bg-white border border-gray-300 rounded-full py-1.5 hover:bg-gray-100 focus:bg-gray-100">
+    Følg
+  </button>
+<button
+  onClick={() => { window.location.href=`program/${activity.id}`; }}
+  className="btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
+>
+  <div className="flex flex-row justify-center items-center">
+    <div>Se hele</div>
+    <div className="ml-2">
+      <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+    </div>
+  </div>
+</button>
+
+
+
+
+</div>
+
+
+
+
+
 
     </div>
   );
