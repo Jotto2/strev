@@ -24,8 +24,8 @@ module.exports = {
         'darkblue': '#4F597E',
       },
       fontFamily: {
-        'nunito': ['Nunito', 'sans-serif'],
-        'lato': ['Lato', 'sans-serif'],
+        'nunito': '@apply font-nunito',
+        'lato': '@apply font-lato',
       },
       dropShadow: {
         'box': '0 10px 10px rgba(117, 123, 183, .1)',
