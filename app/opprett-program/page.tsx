@@ -6,11 +6,21 @@ import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+type exercise = {
+  title: string,
+  description: string
+}
+
 export default function CreateActivity() {
   const router = useRouter();
 
+
+  //TODO Legg til exercise info selv om knappen ikke trykkes
   const handleExerciseAdd = () => {
-    setExerciseList([...exerciseList, { eTitle: "", eSet: "", eRep: "", eWeight: "" }]);
+    console.log("title: "+exTitle);
+    console.log("desc: " + exDescription);
+    setExerciseList([...exerciseList, { title: exTitle, description: exDescription }]); //Denne linja må fikses, få {exTitle, exDescription} inn i exerciseList
+    console.log(exerciseList);
   };
 
   const handleExerciseRemove = (index: number) => {
@@ -42,11 +52,18 @@ export default function CreateActivity() {
   const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [days, setDays] = useState([]);
-  const [exerciseList, setExerciseList] = useState([{ eTitle: "", eSet: "", eRep: "", eWeight: "" }]);
+
+  const [exerciseList, setExerciseList] = useState<exercise[]>([{title: "", description: ""}]);
+
   const [isPublic, setIsPublic] = useState(false);
+
+  const [exTitle, setExTitle] = useState("");
+  const [exDescription, setExDescription] = useState("");
+
 
   const create = async () => {
     event.preventDefault(); // Stop page reload
+    console.log()
     const docRef = await addDoc(collection(firestoreDB, "activity"), {
       title,
       category,
@@ -240,33 +257,19 @@ export default function CreateActivity() {
                   type="text"
                   name="title"
                   placeholder="Tittel"
-                />
-              </label>
-              {/*Her må noen lage validering for å kun ta inn tall*/}
-              <label className="w-10 ">
-                <input
-                  className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
-                  type="text"
-                  name="title"
-                  placeholder="Antall Sett"
+                  onChange={(e) => setExTitle(e.target.value)}
                 />
               </label>
               <label className="w-10 ">
                 <input
                   className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
                   type="text"
-                  name="title"
-                  placeholder="Repetisjoner per sett"
+                  name="description"
+                  placeholder="Beskrivelse"
+                  onChange={(e) => setExDescription(e.target.value)}
                 />
               </label>
-              <label className="w-10 ">
-                <input
-                  className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
-                  type="text"
-                  name="title"
-                  placeholder="Vekt per repetisjon"
-                />
-              </label>
+              
 
               {exerciseList.length - 1 === index &&
                 exerciseList.length < 15 && (
@@ -302,3 +305,7 @@ export default function CreateActivity() {
     </div>
   );
 }
+function preventDefault() {
+  throw new Error("Function not implemented.");
+}
+
