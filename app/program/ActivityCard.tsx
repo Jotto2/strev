@@ -8,7 +8,7 @@ import classNames from "classnames/bind";
 import "firebase/firestore";
 import firebase from "firebase/app";
 import getCollection from "firestore/getData";
-import { collection, updateDoc } from "firebase/firestore";
+import { collection, getDoc, updateDoc } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
 import { doc } from "firebase/firestore";
 
@@ -34,12 +34,60 @@ export default function ActivityCard({ activity }: any) {
 
   const [isSubscribed, setIsSubscribed] = useState(false);
 
+  useEffect(() => {
+    const checkFollowStatus = async () => {
+      const followerRef = doc(firestoreDB, `activity/${activity.id}`);
+      const followerSnap = await getDoc(followerRef);
+
+      if (followerSnap.exists()) {
+        const followerData = followerSnap.data();
+
+        if (followerData?.followedBy) {
+          setIsSubscribed(followerData.followedBy.includes(user.uid));
+        }
+      }
+    };
+
+    checkFollowStatus();
+  }, [activity.id, user.uid]);
+
   const updateFollower = async () => {
-    const follower = doc(firestoreDB, `activity/${activity.id}`);
-    await updateDoc(follower, {
-      //Her må det legges til en oppdatert array
-      followedBy: ["test"],
-    });
+    const followerRef = doc(firestoreDB, `activity/${activity.id}`);
+    const followerSnap = await getDoc(followerRef);
+
+    if (followerSnap.exists()) {
+      const followerData = followerSnap.data();
+
+      if (followerData?.followedBy) {
+        // If followedBy array already exists, check if user ID is present in it
+        const index = followerData.followedBy.indexOf(user.uid);
+
+        if (index === -1) {
+          // User ID not present in followedBy array, so add it
+          await updateDoc(followerRef, {
+            followedBy: [...followerData.followedBy, user.uid],
+          });
+          setIsSubscribed(true);
+        } else {
+          // User ID present in followedBy array, so remove it
+          const updatedFollowedBy = [
+            ...followerData.followedBy.slice(0, index),
+            ...followerData.followedBy.slice(index + 1),
+          ];
+
+          await updateDoc(followerRef, {
+            followedBy: updatedFollowedBy,
+          });
+          setIsSubscribed(false);
+        }
+      } else {
+        // If followedBy array does not exist, create it and add user ID
+        await updateDoc(followerRef, {
+          followedBy: [user.uid],
+        });
+        setIsSubscribed(true);
+      }
+    }
   };
 
   return (
@@ -117,7 +165,9 @@ export default function ActivityCard({ activity }: any) {
       ) : (
         <div className="grid grid-cols-2 gap-4 p-4">
           <button
-            className="btn text-sm text-dark bg-white rounded-full"
+            className={`btn text-sm text-dark rounded-full ${
+              isSubscribed ? "bg-white hover:bg-lightgrey" : "bg-lightblue hover:bg-hoverblue"
+            }`}
             onClick={updateFollower}
           >
             {isSubscribed ? "Følger" : "Følg"}
@@ -126,12 +176,12 @@ export default function ActivityCard({ activity }: any) {
             onClick={() => {
               window.location.href = `program/${activity.id}`;
             }}
-            className="py-2 btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
+            className="py-2 btn text-sm text-white bg-salmon rounded-full hover:bg-darksalmon focus:bg-blue-700 flex justify-center items-center"
           >
             <div className="flex flex-row justify-center items-center">
               <div>Se hele</div>
               <div className="ml-2">
-                <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+                <img src="./arrow.svg" className="h-1.5" alt="Arrow Icon" />
               </div>
             </div>
           </button>
