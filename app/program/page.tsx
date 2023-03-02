@@ -33,7 +33,7 @@ async function getFollowedActivities() {
   const myCollection = collection(firestoreDB, "activity");
   //TODO her må det legges til en where som sjekker om brukeren er følger av aktiviteten
   const querySnapshot = await getDocs(
-    query(myCollection, where("createdBy", "==", user.uid))
+    query(myCollection, where("followedBy", "array-contains", user.uid))
   );
   const myArray = querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() };
@@ -44,11 +44,14 @@ async function getFollowedActivities() {
 
 export default function ProgramPage() {
   const [activity, setActivity] = useState([]);
+  const [followedActivity, setFollowedActivity] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const result = await getProgram();
       setActivity(result);
+      const followedResult = await getFollowedActivities();
+      setFollowedActivity(followedResult);
     }
     fetchData();
   }, []);
@@ -83,6 +86,17 @@ export default function ProgramPage() {
         })}
 
         <h2 className="pt-5">Aktiviteter du følger</h2>
+    
+        {followedActivity.map((activity) => {
+          return (
+            <div
+              className="p-3
+          "
+            >
+              <ActivityCard key={activity.id} activity={activity} />
+            </div>
+          );
+        })}
       </div>
       {/* //TODO her må det legges til en liste med aktiviteter brukeren følger */}
     </div>
