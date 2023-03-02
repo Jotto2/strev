@@ -14,7 +14,6 @@ type exercise = {
 export default function CreateActivity() {
   const router = useRouter();
 
-
   //TODO Legg til exercise info selv om knappen ikke trykkes
   const handleExerciseAdd = () => {
     console.log("title: "+exTitle);
@@ -43,7 +42,6 @@ export default function CreateActivity() {
     }
   };
 
-
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -52,14 +50,12 @@ export default function CreateActivity() {
   const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [days, setDays] = useState([]);
+  const [isPublic, setIsPublic] = useState(false);
 
   const [exerciseList, setExerciseList] = useState<exercise[]>([{title: "", description: ""}]);
 
-  const [isPublic, setIsPublic] = useState(false);
-
   const [exTitle, setExTitle] = useState("");
   const [exDescription, setExDescription] = useState("");
-
 
   const create = async () => {
     event.preventDefault(); // Stop page reload
