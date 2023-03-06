@@ -152,12 +152,12 @@ export default function ActivityCard({ activity }: any) {
             onClick={() => {
               window.location.href = `program/${activity.id}`;
             }}
-            className="py-2 btn text-sm text-dark bg-lightblue border border-lightblue rounded-full hover:bg-blue-700 focus:bg-blue-700 flex justify-center items-center"
+            className="py-2 btn text-sm text-white bg-salmon rounded-full hover:bg-darksalmon focus:bg-blue-700 flex justify-center items-center"
           >
             <div className="flex flex-row justify-center items-center">
               <div>Se hele</div>
               <div className="ml-2">
-                <img src="./arrow.png" className="h-1.5" alt="Arrow Icon" />
+                <img src="./arrow.svg" className="h-1.5" alt="Arrow Icon" />
               </div>
             </div>
           </button>
@@ -166,7 +166,9 @@ export default function ActivityCard({ activity }: any) {
         <div className="grid grid-cols-2 gap-4 p-4">
           <button
             className={`btn text-sm text-dark rounded-full ${
-              isSubscribed ? "bg-white hover:bg-lightgrey" : "bg-lightblue hover:bg-hoverblue"
+              isSubscribed
+                ? "bg-white hover:bg-lightgrey"
+                : "bg-lightblue hover:bg-hoverblue"
             }`}
             onClick={updateFollower}
           >
