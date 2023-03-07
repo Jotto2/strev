@@ -5,6 +5,7 @@ import { firestoreDB } from "lib/firebase";
 import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { each } from "cypress/types/bluebird";
 
 type exercise = {
   title: string,
@@ -16,9 +17,10 @@ export default function CreateActivity() {
 
   //TODO Legg til exercise info selv om knappen ikke trykkes
   const handleExerciseAdd = () => {
-    console.log("title: "+exTitle);
-    console.log("desc: " + exDescription);
-    setExerciseList([...exerciseList, { title: exTitle, description: exDescription }]); //Denne linja må fikses, få {exTitle, exDescription} inn i exerciseList
+    event.preventDefault();
+    const oldarray: exercise[] = exerciseList;
+    oldarray.push({ title: exTitle, description: exDescription });
+    setExerciseList(oldarray);
     console.log(exerciseList);
   };
 
@@ -59,14 +61,23 @@ export default function CreateActivity() {
 
   const create = async () => {
     event.preventDefault(); // Stop page reload
-    console.log()
+
+    const exList: exercise[] = []
+    
+    exerciseList.forEach(ex => {
+      if(ex.title != "" && ex.description != "") {
+        exList.push(ex);
+      }
+    });
+    console.log(exList);
+    
     const docRef = await addDoc(collection(firestoreDB, "activity"), {
       title,
       category,
       description,
       //selectedImage,
       days,
-      exerciseList,
+      exList,
       isPublic,
       createdAt: new Date(),
       createdBy: user.uid,
