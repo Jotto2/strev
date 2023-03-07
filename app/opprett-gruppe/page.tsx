@@ -15,10 +15,20 @@ import React, { useState } from "react";
 export default function CreateGroup() {
   const router = useRouter();
   const [title, setTitle] = useState("");
+
   const [desc, setDesc] = useState("");
+  const [charCount, setCharCount] = useState(0);
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const count = value.length > 100 ? 100 : value.length; // Limit to max 100 characters
+    setDesc(value.slice(0, 100)); // Limit to max 100 characters
+    setCharCount(count);
+  };
+
   const auth = getAuth();
   const user = auth.currentUser;
   const [imgUrl, setImgUrl] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [progresspercent, setProgresspercent] = useState(0);
   const [imageAsFile, setImageAsFile] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -94,12 +104,20 @@ export default function CreateGroup() {
   return (
     <div>
       <Navbar activeProp={3} />
-      <h1>Opprett gruppe</h1>
       {loader ? (
         <div>Oppretter gruppen...</div>
       ) : (
+        <div className="w-full max-w-md mx-auto mt-10 mb-10 bg-background px-4 pb-4">
+          <button onClick={() => {window.location.href = '/grupper'}}>
+          <div className="flex items-center btn mt-10 text-sm text-lightgrey bg-white rounded-full">
+                <img src="./Vector.svg" className="h-4 "  alt="Vector"></img>
+              </div>
+              </button>
+              <br></br>
+              <br></br>    
+          <div className="rounded-xl bg-white p-4 ">
+          <h2 className="text-xl pt-4 mb-3">Opprett gruppe</h2>
         <form onSubmit={create}>
-          <p>Tittel</p>
           <label className="w-10">
             <input
               className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
@@ -109,28 +127,76 @@ export default function CreateGroup() {
               onChange={(e) => setTitle(e.target.value)}
             />
           </label>
-          <p>Beskrivelse</p>
+          
+
+          <div>
+            {selectedImage && (
+              <div className="">
+                <img
+                  className="w-full max-h-60 object-cover rounded-lg"
+                  alt="not found"
+                  width={"250px"}
+                  src={URL.createObjectURL(selectedImage)}
+                
+                />
+                <div className="flex justify-center">
+                  <button
+                    className="text-center text-salmon p-3"
+                    onClick={() => setSelectedImage(null)}
+                  >
+                    Fjern bilde
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <label
+              htmlFor="file-upload"
+              className=" mb-4 py-3 relative cursor-pointer bg-salmon text-white text-md text-left rounded-md w-full inline-flex items-center"
+            >
+              <span className="pl-4">Last opp forsidebilde</span>
+
+              <input
+                id="file-upload"
+                name="myImage"
+                type="file"
+                className="sr-only"
+                onChange={(event) => {
+                  if (!event.target.files) return;
+                  setSelectedImage(event.target.files[0]);
+                }}
+              />
+              <div className="ml-auto pr-5">
+                <img src="./Upload.png" className="h-4"></img>
+              </div>
+            </label>
+          </div>
+
           <label className="w-10">
-            <input
-              className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
-              type="text"
-              name="desc"
-              placeholder="Beskrivelse"
-              onChange={(e) => setDesc(e.target.value)}
-            />
-          </label>
-          <input
+      <textarea
+        className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
+        name="desc"
+        placeholder="Beskrivelse"
+        onChange={handleChange}
+        value={desc}
+      />
+      <div className="text-right  text-lightgrey text-xs">{charCount}/100 characters</div>
+    </label>
+
+          {/* <textarea
             // allows you to reach into your file directory and upload image to the browser
             type="file"
             onChange={handleFileInputChange}
-          />
+          /> */}
           <button
-            className="bg-salmon text-white text-md rounded-md w-full p-2 "
+            className="bg-salmon text-white text-base rounded-md w-full p-2 drop-shadow-box"
             type="submit"
           >
-            Opprett aktivitet
+            Opprett gruppe
           </button>
         </form>
+        </div>
+        </div>
       )}
     </div>
   );

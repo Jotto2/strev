@@ -38,17 +38,29 @@ export default function GruppeSide() {
   }, []);
 
   return (
-    <div>
-
-    <button onClick={() => {window.location.href = '/opprett-gruppe'}}>Opprett en gruppe</button>
-
+    <div className="pb-32 mt-10">
       <Navbar activeProp={3} />
+      <div className="max-w-md mx-auto pt-5 px-4 pb-4 bg-background">
+        
+    <button
+              onClick={() => { window.location.href="/opprett-gruppe" }}
+              className="bg-salmon mb-4 text-white text-md text-left rounded-2xl w-full p-1 py-5 inline-flex items-center">
+              <span className=" pl-5 text-xl">Lag en ny gruppe</span>
+              <div className="ml-auto pr-3">
+                <img src="./AddButton.png" className="h-8"></img>
+              </div>
+            </button>
+            <div className="ml-2 text-black text-xl bg-background">Mine grupper</div>
+           
       
       {gruppe.map((grup) => {
         return (
+          <div className='p-3'>
           <Groupcard key={grup.id} group={grup}/>
+          </div>
         )
       })}
+    </div>
     </div>
   )
 }

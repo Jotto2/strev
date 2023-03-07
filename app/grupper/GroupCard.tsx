@@ -19,20 +19,36 @@ export default function GroupCard({ group }: any) {
 
 
   return (
-    <div className="mx-auto p-3 m-4 bg-salmon">
+    <div className="rounded-2xl bg-white max-w-md mx-auto border-8 border-white shadow-lg">
         <img src={imageURL} alt="" />  
-      <h1>{title}</h1>
-      <h1>{description}</h1>
-      <h1>{followedBy.length}</h1>
-      <h1></h1>
-      <button
-        className=""
-        onClick={() => {
-          window.location.href = `grupper/${group.id}`;
-        }}
-      >
-        Trykk på meg
-      </button>
+      <h1>*BILDE HER*</h1>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <h3 className="text-black text-xl -mt-2 truncate">{title}</h3>
+      <div className="text-black text-md truncate">{description}</div>
+      <div className="grid grid-cols-2 gap-4 p-3">
+        <button
+          className="btn text-sm text-white bg-purple rounded-full py-1.5"
+          onClick={() => {
+            window.location.href = `grupper/${group.id}`;
+          }}
+    >
+          Se gruppen
+        </button>
+        <div className="flex items-center text-lightgrey text-sm">
+          <img src="./Vector.png" className="h-3 mr-2" alt="Vector"></img>
+          {followedBy.length > 0 ? (
+            <div>{followedBy.length}</div>
+          ) : (
+            <div>Inviter medlemmer</div>
+          )}
+        </div>
+  </div>
+
+
+
     </div>
   );
 }
