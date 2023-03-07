@@ -1,5 +1,5 @@
 'use client'
-import React, { useMemo} from 'react';
+import React from 'react';
 import { useRouter } from "next/navigation";
 import {
     onAuthStateChanged,
@@ -10,21 +10,15 @@ import {firebase_app} from 'lib/firebase';
 
 const auth = getAuth(firebase_app);
 
-const initVal = {
-    user: null,
-    loading: true
-}
-
-export const AuthContext = React.createContext(initVal);
+export const AuthContext = React.createContext({});
 
 export const useAuthContext = () => React.useContext(AuthContext);
 
-export const AuthContextProvider = ({ children }) => {
+export const AuthContextProvider = ({
+    children,
+}) => {
     const [user, setUser] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
-
-    const userValue = useMemo(() => ({user, loading}), [user, loading]);
-
 
     const router = useRouter();
 
@@ -46,11 +40,13 @@ export const AuthContextProvider = ({ children }) => {
             setLoading(false);
         });
 
+        
+
         return () => unsubscribe();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ userValue }}>
+        <AuthContext.Provider value={{ user }}>
             {loading ? <div>Loading...</div> : children}
         </AuthContext.Provider>
     );

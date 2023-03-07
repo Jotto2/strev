@@ -5,13 +5,6 @@ import { firestoreDB } from "lib/firebase";
 import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { each } from "cypress/types/bluebird";
-import { useAuthContext } from "context/AuthContext";
-
-type exercise = {
-  title: string,
-  description: string
-}
 
 export default function CreateActivity() {
   const router = useRouter();
@@ -41,8 +34,8 @@ export default function CreateActivity() {
   };
 
 
-
-  const {user, loading} = useAuthContext();
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
