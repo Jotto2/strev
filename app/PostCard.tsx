@@ -27,11 +27,13 @@ export default function PostCard({ post }: any) {
   const [email, setEmail] = useState(post.createdByEmail);
   const [text, setText] = useState(post.text);
   const [activity, setActivity] = useState({});
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(post.likedBy.includes(user.uid));
+  const [likedBy, setLikedBy] = useState(post.likedBy);
   const [amountOfLikes, setAmountOfLikes] = useState(post.likedBy.length);
   const [comments, setComments] = useState(post.comments);
 
   const commentInput = useRef(null);
+  const docRef = doc(firestoreDB, "posts", post.id);
 
   async function getProgram(id: string) {
     const activityRef = doc(firestoreDB, "activity", id);
@@ -49,27 +51,32 @@ export default function PostCard({ post }: any) {
     console.log(activity);
   }, []);
 
-  const handleLike = () => {
-    liked
-      ? setAmountOfLikes(amountOfLikes - 1)
-      : setAmountOfLikes(amountOfLikes + 1);
-    setLiked(!liked);
-    // TODO kjør databaseshit her
+  const handleLike = async () => {
+    const newLiked = !liked;
+    setLiked(newLiked);
+    setAmountOfLikes(newLiked ? amountOfLikes + 1 : amountOfLikes - 1);
+
+    await updateDoc(docRef, {
+      likedBy: newLiked
+        ? [...likedBy, user.uid]
+        : likedBy.filter((id) => id !== user.uid),
+    });
   };
+
 
   const handleComment = async () => {
     event.preventDefault();
-
-    const docRef = doc(firestoreDB, "posts", post.id);
-    await updateDoc(docRef, {
-      comments: [...comments,
-        {
-          commentedByName: user.displayName,
-          commentedByImage: user.photoURL,
-          text: commentInput.current.value,
-        }
-      ]
-    });
+    commentInput.current.value == "" ? null : (
+      await updateDoc(docRef, {
+        comments: [...comments,
+          {
+            commentedByName: user.displayName,
+            commentedByImage: user.photoURL,
+            text: commentInput.current.value,
+          }
+        ]
+      })
+    )
     commentInput.current.value = "";
   };
 
@@ -145,7 +152,7 @@ export default function PostCard({ post }: any) {
       >
         <img className="rounded-full h-12" src={user.photoURL} alt="" />
         <input
-          className="bg-background rounded-full p-3 font-lato font-normal w-full outline-commentblue border-[1px] border-darkgrey"
+          className="bg-background rounded-full p-3 font-lato font-normal w-full outline-commentblue  border-[1px] border-darkgrey enabled:outline-4"
           ref={commentInput}
           type="text"
           placeholder="Skriv en kommentar..."
