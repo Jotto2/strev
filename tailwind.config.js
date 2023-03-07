@@ -24,6 +24,8 @@ module.exports = {
         'blue': '#4185F5',
         'darkblue': '#4F597E',
         'hoverblue': '#7CC1CD',
+        'heartred': '#E36969',
+        'commentblue': '#3691D3',
       },
       fontFamily: {
         'nunito': '@apply font-nunito',
