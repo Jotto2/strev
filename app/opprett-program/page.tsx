@@ -21,6 +21,8 @@ export default function CreateActivity() {
     const oldarray: exercise[] = exerciseList;
     oldarray.push({ title: exTitle, description: exDescription });
     setExerciseList(oldarray);
+    setExTitle("");
+    setExDescription("");
     console.log(exerciseList);
   };
 
