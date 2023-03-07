@@ -26,7 +26,7 @@ export default function PostCard({ post }: any) {
   const [displayName, setDisplayName] = useState(post.createdByName);
   const [email, setEmail] = useState(post.createdByEmail);
   const [text, setText] = useState(post.text);
-  const [activity, setActivity] = useState({});
+  const [activity, setActivity] = useState(getProgram(post.activityId));
   const [liked, setLiked] = useState(post.likedBy.includes(user.uid));
   const [likedBy, setLikedBy] = useState(post.likedBy);
   const [amountOfLikes, setAmountOfLikes] = useState(post.likedBy.length);
@@ -36,20 +36,14 @@ export default function PostCard({ post }: any) {
   const docRef = doc(firestoreDB, "posts", post.id);
 
   async function getProgram(id: string) {
+    //! TING SKJER FEIL HER
     const activityRef = doc(firestoreDB, "activity", id);
     const activityDoc = await getDoc(activityRef);
+
+    console.log("PROGRAM");
+    console.log(activityDoc.data);
     return activityDoc.data();
   }
-
-  useEffect(() => {
-    async function fetchData() {
-      const result = await getProgram("OWOhnIIpGO3wAsiIdSXQ");
-      setActivity(result);
-    }
-    fetchData();
-
-    console.log(activity);
-  }, []);
 
   const handleLike = async () => {
     const newLiked = !liked;
@@ -63,25 +57,35 @@ export default function PostCard({ post }: any) {
     });
   };
 
-
   const handleComment = async () => {
     event.preventDefault();
-    commentInput.current.value == "" ? null : (
-      await updateDoc(docRef, {
-        comments: [...comments,
-          {
-            commentedByName: user.displayName,
-            commentedByImage: user.photoURL,
-            text: commentInput.current.value,
-          }
-        ]
-      })
-    )
+
+    setComments([
+      ...comments,
+      {
+        commentedByName: user.displayName,
+        commentedByImage: user.photoURL,
+        text: commentInput.current.value,
+      },
+    ]);
+
+    commentInput.current.value == ""
+      ? null
+      : await updateDoc(docRef, {
+          comments: [
+            ...comments,
+            {
+              commentedByName: user.displayName,
+              commentedByImage: user.photoURL,
+              text: commentInput.current.value,
+            },
+          ],
+        });
     commentInput.current.value = "";
   };
 
   return (
-    <div className="bg-white rounded-xl p-4 max-w-md mx-auto drop-shadow-box">
+    <div className="bg-white rounded-xl p-4 max-w-md mx-auto drop-shadow-box mt-20">
       <div className="flex gap-5 items-center mb-5">
         <img className="rounded-full h-16" src={photoURL} alt="" />
         <div>
@@ -91,13 +95,9 @@ export default function PostCard({ post }: any) {
       </div>
       <div className="mb-5 font-lato">{text}</div>
 
-      <div className="mb-5">
-        {/*
-          <ActivityCard key="" activity={activity} />
-          */}
-      </div>
+      <div className="mb-5"></div>
 
-      <div className="flex items-center gap-7 font-nunito font-semibold border-b-[1.5px] pb-5 mb-5">
+      <div className="flex items-center gap-7 font-nunito font-semibold border-b-[1.5px] pb-5">
         <div
           className="group cursor-pointer flex items-center gap-1"
           onClick={() => handleLike()}
@@ -128,26 +128,29 @@ export default function PostCard({ post }: any) {
             <FaRegComment className="block group-hover:hidden " size="25" />
             <FaComment className="hidden group-hover:block " size="25" />
           </div>
-          {comments.length} kommentarer
+          {comments.length}{" "}
+          {comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
         </div>
       </div>
-      <div className="border-b-[1.5px] mb-5">
-        {comments.map((comment: any, index) => (
-          <div key={index} className="flex items-center gap-5 mb-5">
-            <img
-              className="rounded-full h-10"
-              src={comment.commentedByImage}
-              alt=""
-            />
-            <div>
-              <div className="font-semibold">{comment.commentedByName}</div>
-              <div>{comment.text}</div>
+      {comments.length == 0 ? null : (
+        <div className="border-b-[1.5px] pt-5 overflow-auto max-h-56">
+          {comments.map((comment: any, index) => (
+            <div key={index} className="flex items-center gap-5 mb-5">
+              <img
+                className="rounded-full h-10"
+                src={comment.commentedByImage}
+                alt=""
+              />
+              <div>
+                <div className="font-semibold">{comment.commentedByName}</div>
+                <div>{comment.text}</div>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <form
-        className="flex items-center justify-between gap-5"
+        className="flex items-center justify-between gap-5 mt-5"
         onSubmit={handleComment}
       >
         <img className="rounded-full h-12" src={user.photoURL} alt="" />

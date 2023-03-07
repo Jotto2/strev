@@ -23,7 +23,7 @@ export const dynamic = "auto",
 
 async function getPosts() {
   const myCollection = collection(firestoreDB, "posts");
-  const querySnapshot = await getDocs(query(myCollection, where("text", "!=", "test") ));
+  const querySnapshot = await getDocs(query(myCollection, where("createdByEmail", "!=", "") ));
   const myArray = querySnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() }; // Add ID to data object
   });
@@ -43,7 +43,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="pb-32 pt-52">
+    <div className="pb-32">
       { /*
       <div className="grid place-items-center pt-80">
         <h1 className="text-3xl">Velkommen til Strev</h1>
