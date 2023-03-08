@@ -172,15 +172,15 @@ export default function CreateGroup() {
             </label>
           </div>
 
-          <label className="w-10">
+          <label className="w-10 h-10">
       <textarea
-        className="mb-4 pl-4 h-8 w-full bg-background rounded-md"
+        className="mb-4 pl-4 w-full resize-y bg-background rounded-md" 
         name="desc"
         placeholder="Beskrivelse"
         onChange={handleChange}
         value={desc}
       />
-      <div className="text-right  text-lightgrey text-xs">{charCount}/100 characters</div>
+      <div className="text-right  text-lightgrey text-xs">{charCount}/100</div>
     </label>
 
           {/* <textarea
