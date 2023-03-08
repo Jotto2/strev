@@ -2,10 +2,21 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "components/Navbar";
 import { getAuth } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
-import { firestoreDB } from "lib/firebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { firebase_app, firestoreDB } from "lib/firebase";
 import { useRouter } from "next/navigation";
 import Post from "@/Post";
+import Link from "next/link";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 async function getGroup(id: string) {
   const activityRef = doc(firestoreDB, "groups", id);
@@ -31,6 +42,7 @@ export default function Group({ params }: any) {
   const router = useRouter();
   const [posts, setPosts] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
+
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -46,7 +58,6 @@ export default function Group({ params }: any) {
     console.log(myArray);
     return myArray;
   }
-
 
   //Ordner følging
   useEffect(() => {
@@ -114,7 +125,7 @@ export default function Group({ params }: any) {
 
   return (
     <div>
-    {/* Her er det bare en knapp for å gå tilbake, og en navbar som er lik på alle sider */}
+      {/* Her er det bare en knapp for å gå tilbake, og en navbar som er lik på alle sider */}
       <button
         className="flex p-1 pt-8"
         type="button"
@@ -130,7 +141,15 @@ export default function Group({ params }: any) {
       {/* Her er all data til headeren*/}
       <h1>{group.title}</h1>
       <h1>{group.description}</h1>
+
       <h1>{group.followedBy.length} medlemmer</h1>
+
+      {group.followedBy.map((member, index) => (
+        <Link href={`/profil/${member}`}>
+          <p>{member}</p>
+        </Link>
+      ))}
+
       <button
         className={`btn text-sm text-dark rounded-full ${
           isSubscribed
@@ -141,20 +160,19 @@ export default function Group({ params }: any) {
       >
         {isSubscribed ? "Følger" : "Følg"}
       </button>
-    
-        {/* Her er alle postene i gruppen. De er hentet som poster*/}
-        {posts.map((post) => {
-          return (
-            <div
-              className="p-3
+
+      {/* Her er alle postene i gruppen. De er hentet som poster*/}
+      {posts.map((post) => {
+        return (
+          <div
+            className="p-3
           "
-            >
-              <Post key={post.id} post={post} />
-            </div>
-          );
-        })}
-
-
+          >
+            <Post key={post.id} post={post} />
+          </div>
+        );
+      })}
     </div>
   );
 }
+
