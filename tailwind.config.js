@@ -23,6 +23,7 @@ module.exports = {
         'dark': '#2C2F3A',
         'blue': '#4185F5',
         'darkblue': '#4F597E',
+        'hoverblue': '#7CC1CD',
       },
       fontFamily: {
         'nunito': '@apply font-nunito',

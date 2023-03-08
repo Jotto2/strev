@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { userAgent } from "next/server";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { each } from "cypress/types/bluebird";
+import { useAuthContext } from "context/AuthContext";
 
 type exercise = {
   title: string,
@@ -46,8 +47,9 @@ export default function CreateActivity() {
     }
   };
 
-  const auth = getAuth();
-  const user = auth.currentUser;
+
+
+  const {user, loading} = useAuthContext();
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
