@@ -18,8 +18,27 @@ function Page() {
 
     // else successful
     console.log(result);
-    return router.push("/");
+
+      // Successful signup
+      const uid = result.user.uid;
+      const loginArray = [];
+ 
+      const lastLogin = new Date(result.user.metadata.lastSignInTime);
+      const today = new Date();
+      if (lastLogin.getDate() !== today.getDate() - 1 || lastLogin.getDate() !== today.getDate()) {
+        loginArray.splice(0);
+        loginArray.push(today);
+      } else if (lastLogin.getDate() == today.getDate() - 1) {
+        // Last login was yesterday
+        loginArray.push(today);
+      }
+      
+      // doc push (uid, loginArray)
+      //return loginArray.length;
+  
+      return router.push("/");
   };
+  
   return (
     <div className="h-screen mx-auto relative">
       <img
