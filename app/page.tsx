@@ -51,9 +51,9 @@ export default function HomePage() {
       </div>
       */ }
       {
-        posts.map((post) => (
-          <PostCard key="" post={post} />
-        ))
+        /*posts.map((post, index) => (
+          <PostCard key={index} post={post} />
+        ))*/
       }
 
       <Navbar activeProp={0} />
