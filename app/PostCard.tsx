@@ -12,21 +12,36 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import ActivityCard from "./program/ActivityCard";
+import ActivityCard, { Activity } from "./program/ActivityCard";
 import { TbHeartFilled, TbHeart } from "react-icons/tb";
 import { FaRegComment, FaComment } from "react-icons/fa";
 import { IoPaperPlaneOutline, IoPaperPlane } from "react-icons/io5";
+import { useAuthContext } from "context/AuthContext";
+
+async function getProgram(id: string) {
+  //! TING SKJER FEIL HER
+  console.log("getProgram kjøres");
+
+  const activityRef = doc(firestoreDB, "activity", id);
+  const activityDoc = await getDoc(activityRef);
+
+  console.log(activityDoc.data())
+  return activityDoc.data();
+}
 
 export default function PostCard({ post }: any) {
-  const auth = getAuth();
-  const user = auth.currentUser;
+  const {user, loading} = useAuthContext(); //TODO FIX
+
+  console.log("User:")
+  console.log(user)
+
+  getProgram(post.activityID);
 
   const [photoURL, setPhotoURL] = useState(post.createdByImage);
   const [displayName, setDisplayName] = useState(post.createdByName);
   const [email, setEmail] = useState(post.createdByEmail);
   const [text, setText] = useState(post.text);
-  const [activity, setActivity] = useState(getProgram(post.activityId));
+  const [activity, setActivity] = useState<Activity>();
   const [liked, setLiked] = useState(post.likedBy.includes(user.uid));
   const [likedBy, setLikedBy] = useState(post.likedBy);
   const [amountOfLikes, setAmountOfLikes] = useState(post.likedBy.length);
@@ -34,16 +49,6 @@ export default function PostCard({ post }: any) {
 
   const commentInput = useRef(null);
   const docRef = doc(firestoreDB, "posts", post.id);
-
-  async function getProgram(id: string) {
-    //! TING SKJER FEIL HER
-    const activityRef = doc(firestoreDB, "activity", id);
-    const activityDoc = await getDoc(activityRef);
-
-    console.log("PROGRAM");
-    console.log(activityDoc.data);
-    return activityDoc.data();
-  }
 
   const handleLike = async () => {
     const newLiked = !liked;
@@ -59,6 +64,10 @@ export default function PostCard({ post }: any) {
 
   const handleComment = async () => {
     event.preventDefault();
+
+    if (commentInput.current.value == "") { //! MÅ OGSÅ SJEKKE OM BARE INNEHOLDER WHITESPACE
+      return;
+    }
 
     setComments([
       ...comments,
@@ -95,7 +104,12 @@ export default function PostCard({ post }: any) {
       </div>
       <div className="mb-5 font-lato">{text}</div>
 
-      <div className="mb-5"></div>
+      <div className="mb-5">
+        {
+          /*
+          <ActivityCard activity={activity} />
+        */}
+      </div>
 
       <div className="flex items-center gap-7 font-nunito font-semibold border-b-[1.5px] pb-5">
         <div

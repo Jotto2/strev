@@ -8,16 +8,16 @@ import ActivityCard from "./ActivityCard";
 import Navbar from "components/Navbar";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { useAuthContext } from "context/AuthContext";
 
 export const dynamic = "auto",
   dynamicParams = true,
   revalidate = 0,
   fetchCache = "auto";
 
-const auth = getAuth();
-const user = auth.currentUser;
 
-async function getProgram() {
+
+async function getProgram(user) {
   const myCollection = collection(firestoreDB, "activity");
   const querySnapshot = await getDocs(
     query(myCollection, where("createdBy", "==", user.uid))
@@ -29,7 +29,7 @@ async function getProgram() {
   return myArray;
 }
 
-async function getFollowedActivities() {
+async function getFollowedActivities(user) {
   const myCollection = collection(firestoreDB, "activity");
   //TODO her må det legges til en where som sjekker om brukeren er følger av aktiviteten
   const querySnapshot = await getDocs(
@@ -45,12 +45,13 @@ async function getFollowedActivities() {
 export default function ProgramPage() {
   const [activity, setActivity] = useState([]);
   const [followedActivity, setFollowedActivity] = useState([]);
+  const { user } = useAuthContext();
 
   useEffect(() => {
     async function fetchData() {
-      const result = await getProgram();
+      const result = await getProgram(user);
       setActivity(result);
-      const followedResult = await getFollowedActivities();
+      const followedResult = await getFollowedActivities(user);
       setFollowedActivity(followedResult);
     }
     fetchData();
@@ -74,13 +75,13 @@ export default function ProgramPage() {
             </div>
       <div className="max-w-md mx-auto">
         <h2 className="pt-5">Mine aktiviteter</h2>
-        {activity.map((activity) => {
+        {activity.map((activity, index) => {
           return (
             <div
-              className="p-3
-          "
+              className="p-3"
+              key={index}
             >
-              <ActivityCard key={activity.id} activity={activity} />
+              <ActivityCard props={activity} />
             </div>
           );
         })}
@@ -93,7 +94,7 @@ export default function ProgramPage() {
               className="p-3
           "
             >
-              <ActivityCard key={activity.id} activity={activity} />
+              <ActivityCard key={activity.id} props={activity} />
             </div>
           );
         })}

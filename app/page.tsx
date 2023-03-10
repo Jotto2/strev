@@ -6,7 +6,7 @@ import styles from "@/styles/Home.module.css";
 
 import { getAuth, Auth } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { useAuthContext } from "context/AuthContext";
+import { AuthContext } from "context/AuthContext";
 import { useRouter } from "next/navigation";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -51,9 +51,9 @@ export default function HomePage() {
       </div>
       */ }
       {
-        posts.map((post) => (
-          <PostCard key="" post={post} />
-        ))
+        /*posts.map((post, index) => (
+          <PostCard key={index} post={post} />
+        ))*/
       }
 
       <Navbar activeProp={0} />

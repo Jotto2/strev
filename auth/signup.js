@@ -2,7 +2,7 @@ import firebase_app from "lib/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-const auth = getAuth(firebase_app);
+const auth = getAuth();
 
 export default async function signUp() {
   let result = null,

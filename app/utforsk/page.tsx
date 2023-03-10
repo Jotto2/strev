@@ -4,37 +4,38 @@ import getCollection from "firestore/getData";
 import { getFirestore } from "firebase/firestore";
 import { firebase_app, firestoreDB } from "lib/firebase";
 import Link from "next/link";
-import ActivityCard from "@/program/ActivityCard";
+import ActivityCard, { Activity } from "@/program/ActivityCard";
 import Navbar from "components/Navbar";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { BiSearch } from "react-icons/bi";
+import { useAuthContext } from "context/AuthContext";
 
 export const dynamic = "auto",
   dynamicParams = true,
   revalidate = 0,
   fetchCache = "auto";
 
-  const auth = getAuth();
-  const user = auth.currentUser;
+export default function ProgramPage() {
+  const {user, loading} = useAuthContext();
+
+  console.log(user)
+
+  const [activity, setActivity] = useState<Activity[]>([]);
 
   async function getProgram() {
     const myCollection = collection(firestoreDB, "activity");
     const querySnapshot = await getDocs(query(myCollection, where("createdBy", "!=", user.uid), where("isPublic", "==", true)));
-    const myArray = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() }; // Add ID to data object
+    const myArray:Activity[] = [];
+    querySnapshot.forEach((doc) => {
+      myArray.push( doc.data() as Activity);
     });
-    console.log(myArray);
     return myArray;
   }
 
-export default function ProgramPage() {
-    
-  const [activity, setActivity] = useState([]);
-
   useEffect(() => {
     async function fetchData() {
-      const result = await getProgram();
+      const result:Activity[] = await getProgram();
       setActivity(result);
     }
     fetchData();
@@ -53,13 +54,13 @@ export default function ProgramPage() {
     <Navbar activeProp={2}/>
     <div className="max-w-md mx-auto">
 
-      {activity.map((activity) => {
+      {activity.map((activity, index) => {
         return (
           <div
-            className="p-3
-          "
+            className="p-3"
+            key={index}
           >
-            <ActivityCard key={activity.id} activity={activity} />
+            <ActivityCard activity={activity} />
           </div>
         );
       })}
