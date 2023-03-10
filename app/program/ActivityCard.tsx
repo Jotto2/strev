@@ -11,6 +11,8 @@ import getCollection from "firestore/getData";
 import { collection, getDoc, updateDoc } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
 import { doc } from "firebase/firestore";
+import { useAuthContext } from "context/AuthContext";
+import { props } from "cypress/types/bluebird";
 
 export type Activity = {
   id: string;
@@ -37,12 +39,10 @@ type ActivityProps = {
 }
 
 
-export default function ActivityCard( {activity : Activity} ) {
+export default function ActivityCard( {props : Activity} ) {
   //Her må bilde også importeres
 
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const uid = Activity.createdBy;
+  const { user } = useAuthContext();
   const [photoURL, setPhotoURL] = useState("");
 
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -115,7 +115,7 @@ export default function ActivityCard( {activity : Activity} ) {
           : "bg-darkgrey rounded-2xl  max-w-md mx-auto"
       }
     >
-      {user.uid === Activity.activity.createdBy && Activity.isPublic === true ? (
+      {user.uid === Activity.createdBy && Activity.isPublic === true ? (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
           <h4 className="text-white text-sm">{Activity.followedBy.length} følgere</h4>
           <div className="flex justify-end pr-2">
