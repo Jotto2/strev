@@ -12,7 +12,6 @@ import { collection, getDoc, updateDoc } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
 import { doc } from "firebase/firestore";
 import { useAuthContext } from "context/AuthContext";
-import { props } from "cypress/types/bluebird";
 
 export type Activity = {
   id: string;
@@ -39,7 +38,7 @@ type ActivityProps = {
 }
 
 
-export default function ActivityCard( {props : Activity} ) {
+export default function ActivityCard( props : Activity ) {
   //Her må bilde også importeres
 
   const { user } = useAuthContext();
@@ -49,7 +48,7 @@ export default function ActivityCard( {props : Activity} ) {
 
   useEffect(() => {
     const checkFollowStatus = async () => {
-      const followerRef = doc(firestoreDB, `activity/${Activity.id}`);
+      const followerRef = doc(firestoreDB, `activity/${props.id}`);
       const followerSnap = await getDoc(followerRef);
 
       if (followerSnap.exists()) {
@@ -62,11 +61,12 @@ export default function ActivityCard( {props : Activity} ) {
     };
 
     checkFollowStatus();
-  }, [Activity.id, user.uid]);
+  }, [props.id, user.uid]);
 
   const updateFollower = async () => {
-    const followerRef = doc(firestoreDB, `activity/${Activity.id}`);
+    const followerRef = doc(firestoreDB, `activity/${props.id}`);
     const followerSnap = await getDoc(followerRef);
+    console.log("Updating followers");
 
     if (followerSnap.exists()) {
       const followerData = followerSnap.data();
@@ -106,35 +106,35 @@ export default function ActivityCard( {props : Activity} ) {
   return (
     <div
       className={
-        Activity.category === "styrke"
+        props.category === "styrke"
           ? "bg-purple rounded-2xl  max-w-md mx-auto"
-          : Activity.category === "cardio"
+          : props.category === "cardio"
           ? "bg-darkblue rounded-2xl  max-w-md mx-auto"
-          : Activity.category === "bevegelse"
+          : props.category === "bevegelse"
           ? "bg-blue rounded-2xl  max-w-md mx-auto"
           : "bg-darkgrey rounded-2xl  max-w-md mx-auto"
       }
     >
-      {user.uid === Activity.createdBy && Activity.isPublic === true ? (
+      {user.uid === props.createdBy && props.isPublic === true ? (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm">{Activity.followedBy.length} følgere</h4>
+          <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
           <div className="flex justify-end pr-2">
             <h3 className="bg-yellow-100 rounded-full px-5 text-sm text-right">
               Delt
             </h3>
           </div>
         </div>
-      ) : Activity.isPublic === false ? (
+      ) : props.isPublic === false ? (
         <div></div>
       ) : (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm">{Activity.followedBy.length} følgere</h4>
+          <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
           <div className="flex justify-end">
             <h4 className="text-white text-sm truncate">
-              {Activity.madeByName}
+              {props.madeByName}
             </h4>
             <div className="h-5 px-2">
-              <img className="rounded-full h-5" src={Activity.imageURL}></img>
+              <img className="rounded-full h-5" src={props.imageURL}></img>
             </div>
           </div>
         </div>
@@ -150,20 +150,20 @@ export default function ActivityCard( {props : Activity} ) {
         <div className="col-span-2 flex items-center">
           <div>
             <h3 className="text-white text-xl -mt-2 truncate">
-              {Activity.title}
+              {props.title}
             </h3>
-            <p className="text-white text-md">{Activity.description}</p>
+            <p className="text-white text-md">{props.description}</p>
           </div>
         </div>
       </div>
 
       {/* //TODO Legg til sånn at farge og tekst endrer seg basert på status */}
 
-      {user.uid == Activity.createdBy ? (
+      {user.uid == props.createdBy ? (
         <div className="grid grid-cols-1 gap-4 p-4">
           <button
             onClick={() => {
-              window.location.href = `program/${Activity.id}`;
+              window.location.href = `program/${props.id}`;
             }}
             className="py-2 btn text-sm text-white bg-salmon rounded-full hover:bg-darksalmon focus:bg-blue-700 flex justify-center items-center"
           >
@@ -189,7 +189,7 @@ export default function ActivityCard( {props : Activity} ) {
           </button>
           <button
             onClick={() => {
-              window.location.href = `program/${Activity.id}`;
+              window.location.href = `program/${props.id}`;
             }}
             className="py-2 btn text-sm text-white bg-salmon rounded-full hover:bg-darksalmon focus:bg-blue-700 flex justify-center items-center"
           >
