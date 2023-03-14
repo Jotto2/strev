@@ -199,6 +199,7 @@ export default function Group({ params }: any) {
         */}
 
         {/* Her er alle postene i gruppen. De er hentet som poster*/}
+        {/* BYTT UT MED PostCard! */}
         {posts.map((post) => {
           return (
             <div key={post.id} className="p-3">
