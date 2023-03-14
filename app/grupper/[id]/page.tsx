@@ -31,6 +31,7 @@ interface Group {
   description: string;
   followedBy: string[];
   id: string;
+  createdBy: string;
 }
 
 export default function Group({ params }: any) {
@@ -39,6 +40,7 @@ export default function Group({ params }: any) {
     description: "",
     followedBy: [],
     id: "",
+    createdBy: "",
   });
 
   const router = useRouter();
@@ -86,6 +88,8 @@ export default function Group({ params }: any) {
 
   // Oppdaterer følge-knappen basert på om du følger eller ikke
   const updateFollower = async () => {
+    if (user.uid === group.createdBy) return;
+
     const followerRef = doc(firestoreDB, `groups/${params.id}`);
     const followerSnap = await getDoc(followerRef);
 
@@ -145,10 +149,9 @@ export default function Group({ params }: any) {
 
         <div className="rounded-t-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover"></div>
         {/* Her er all data til headeren*/}
-        <div className="bg-white p-5 rounded-b-xl">
+        <div className="bg-white p-5 rounded-b-xl drop-shadow-box">
           <div className="text-xl font-nunito font-bold">{group.title}</div>
           <div className="font-lato">{group.description}</div>
-
           <div
             className="flex cursor-pointer w-max items-center py-3 gap-1 group duration-200"
             onClick={() => {
@@ -169,16 +172,22 @@ export default function Group({ params }: any) {
             />
           </div>
 
-          <button
-            className={`btn text-sm text-dark rounded-full py-2 w-40 font-lato duration-200 ${
-              isSubscribed
-                ? "bg-background hover:bg-lightgrey"
-                : "bg-lightblue hover:bg-hoverblue"
-            }`}
-            onClick={updateFollower}
-          >
-            {isSubscribed ? "Følger" : "Følg"}
-          </button>
+          {group.createdBy === user.uid ? (
+            <div className="bg-yellow py-2 w-40 rounded-full text-dark text-md font-lato text-center font-bold">
+              Gruppeeier
+            </div>
+          ) : (
+            <button
+              className={`btn text-sm text-dark rounded-full py-2 w-40 font-lato duration-200 ${
+                isSubscribed
+                  ? "bg-background hover:bg-lightgrey"
+                  : "bg-lightblue hover:bg-hoverblue"
+              }`}
+              onClick={updateFollower}
+            >
+              {isSubscribed ? "Følger" : "Følg"}
+            </button>
+          )}
         </div>
 
         {/*

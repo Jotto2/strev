@@ -78,7 +78,7 @@ export default function Members({ params }: any) {
         <div className="font-nunito font-bold text-xl">
           Vi som ikke klarer fjellturer
         </div>
-        <div className="bg-white rounded-2xl p-5 mt-5">
+        <div className="bg-white rounded-2xl p-5 mt-5 drop-shadow-box">
           <div className="font-nunito font-bold text-xl">Medlemmer</div>
           <div className="flex flex-col mt-3 gap-3">
             {group.followedBy.map((id, index) => {

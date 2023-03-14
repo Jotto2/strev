@@ -95,7 +95,7 @@ export default function CreateGroup() {
         createdAt: new Date(),
         userImageURL: user.photoURL,
         madeByName: user.displayName,
-        followedBy: [],
+        followedBy: [user.uid],
       });
       console.log("pusher");
       router.push("/grupper");
