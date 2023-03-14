@@ -57,7 +57,6 @@ export default function Group({ params }: any) {
     const myArray = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
-    console.log(myArray);
     return myArray;
   }
 
@@ -125,7 +124,9 @@ export default function Group({ params }: any) {
     }
   };
 
-  console.log(group.id)
+  function handleCreatePost() {
+    console.log("Creating post");
+  }
 
   return (
     <div>
@@ -142,9 +143,7 @@ export default function Group({ params }: any) {
           <p className="text-md pl-2 font-nunito">Gå tilbake</p>
         </button>
 
-        <div className="rounded-t-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover">
-          test
-        </div>
+        <div className="rounded-t-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover"></div>
         {/* Her er all data til headeren*/}
         <div className="bg-white p-5 rounded-b-xl">
           <div className="text-xl font-nunito font-bold">{group.title}</div>
@@ -156,12 +155,18 @@ export default function Group({ params }: any) {
               window.location.href = `${params.id}/medlemmer`;
             }}
           >
-            <FiUser className="text-lightgrey group-hover:text-darkgrey duration-200" size={20} />
+            <FiUser
+              className="text-lightgrey group-hover:text-darkgrey duration-200"
+              size={20}
+            />
             <div className="text-lightgrey group-hover:text-darkgrey duration-200">
               {group.followedBy.length}
               {group.followedBy.length === 1 ? " medlem" : " medlemmer"}
             </div>
-            <IoInformationCircleSharp className="text-salmon group-hover:text-darksalmon duration-200" size={20} />
+            <IoInformationCircleSharp
+              className="text-salmon group-hover:text-darksalmon duration-200"
+              size={20}
+            />
           </div>
 
           <button
@@ -192,13 +197,17 @@ export default function Group({ params }: any) {
             </div>
           );
         })}
-      </div>
-      {
-        // POSTS
-        <div>
-          posts
+
+        {/* Her er pluss-knappen for å lage en ny post*/}
+        <div className="w-full max-w-md mx-auto fixed bottom-24">
+          <div
+            className="bg-salmon rounded-full w-max h-max p-4 hover:bg-darksalmon duration-200 cursor-pointer absolute right-4 bottom-4"
+            onClick={() => handleCreatePost()}
+          >
+            <img className="w-10" src="/plus-icon.svg" alt="" />
+          </div>
         </div>
-      }
+      </div>
     </div>
   );
 }
