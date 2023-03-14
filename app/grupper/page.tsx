@@ -42,7 +42,7 @@ export default function GruppeSide() {
           onClick={() => {
             window.location.href = "/opprett-gruppe";
           }}
-          className="bg-salmon mb-4 text-white text-md text-left rounded-2xl w-full p-1 py-5 inline-flex items-center"
+          className="bg-salmon hover:bg-darksalmon duration-200 mb-4 text-white text-md text-left rounded-2xl w-full p-1 py-5 inline-flex items-center"
         >
           <span className=" pl-5 text-xl">Lag en ny gruppe</span>
           <div className="ml-auto pr-3">
