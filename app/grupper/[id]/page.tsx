@@ -17,8 +17,10 @@ import { useRouter } from "next/navigation";
 import Post from "@/Post";
 import Link from "next/link";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
+import { FiUser } from "react-icons/fi";
+import { IoInformationCircleSharp } from "react-icons/io5";
 
-async function getGroup(id: string) {
+export async function getGroup(id: string) {
   const activityRef = doc(firestoreDB, "groups", id);
   const activityDoc = await getDoc(activityRef);
   return activityDoc.data() as Group;
@@ -83,7 +85,7 @@ export default function Group({ params }: any) {
     checkFollowStatus();
   }, [params.id, user.uid]);
 
-  //Oppdaterer "følge"knappen basert på om du følger eller ikke
+  // Oppdaterer følge-knappen basert på om du følger eller ikke
   const updateFollower = async () => {
     const followerRef = doc(firestoreDB, `groups/${params.id}`);
     const followerSnap = await getDoc(followerRef);
@@ -123,56 +125,80 @@ export default function Group({ params }: any) {
     }
   };
 
+  console.log(group.id)
+
   return (
     <div>
-      {/* Her er det bare en knapp for å gå tilbake, og en navbar som er lik på alle sider */}
-      <button
-        className="flex p-1 pt-8"
-        type="button"
-        onClick={() => router.back()}
-      >
-        <div className="h-30">
-          <img src="/backArrow.svg" alt="" />
-        </div>
-        <p className="text-md pl-2">Gå tilbake</p>
-      </button>
       <Navbar activeProp={3} />
-
-      {/* Her er all data til headeren*/}
-      <h1>{group.title}</h1>
-      <h1>{group.description}</h1>
-
-      <h1>{group.followedBy.length} medlemmer</h1>
-
-      {group.followedBy.map((member, index) => (
-        <Link href={`/profil/${member}`}>
-          <p>{member}</p>
-        </Link>
-      ))}
-
-      <button
-        className={`btn text-sm text-dark rounded-full ${
-          isSubscribed
-            ? "bg-white hover:bg-lightgrey"
-            : "bg-lightblue hover:bg-hoverblue"
-        }`}
-        onClick={updateFollower}
-      >
-        {isSubscribed ? "Følger" : "Følg"}
-      </button>
-
-      {/* Her er alle postene i gruppen. De er hentet som poster*/}
-      {posts.map((post) => {
-        return (
-          <div
-            className="p-3
-          "
-          >
-            <Post key={post.id} post={post} />
+      <div className="max-w-md mx-auto">
+        <button
+          className="flex p-1 my-5 "
+          type="button"
+          onClick={() => router.back()}
+        >
+          <div className="h-30">
+            <img src="/backArrow.svg" alt="" />
           </div>
-        );
-      })}
+          <p className="text-md pl-2 font-nunito">Gå tilbake</p>
+        </button>
+
+        <div className="rounded-t-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover">
+          test
+        </div>
+        {/* Her er all data til headeren*/}
+        <div className="bg-white p-5 rounded-b-xl">
+          <div className="text-xl font-nunito font-bold">{group.title}</div>
+          <div className="font-lato">{group.description}</div>
+
+          <div
+            className="flex cursor-pointer w-max items-center py-3 gap-1 group duration-200"
+            onClick={() => {
+              window.location.href = `${params.id}/medlemmer`;
+            }}
+          >
+            <FiUser className="text-lightgrey group-hover:text-darkgrey duration-200" size={20} />
+            <div className="text-lightgrey group-hover:text-darkgrey duration-200">
+              {group.followedBy.length}
+              {group.followedBy.length === 1 ? " medlem" : " medlemmer"}
+            </div>
+            <IoInformationCircleSharp className="text-salmon group-hover:text-darksalmon duration-200" size={20} />
+          </div>
+
+          <button
+            className={`btn text-sm text-dark rounded-full py-2 w-40 font-lato duration-200 ${
+              isSubscribed
+                ? "bg-background hover:bg-lightgrey"
+                : "bg-lightblue hover:bg-hoverblue"
+            }`}
+            onClick={updateFollower}
+          >
+            {isSubscribed ? "Følger" : "Følg"}
+          </button>
+        </div>
+
+        {/*
+          group.followedBy.map((member, index) => (
+            <Link key={member} href={`/profil/${member}`}>
+              <p>{member}</p>
+            </Link>
+          ))
+        */}
+
+        {/* Her er alle postene i gruppen. De er hentet som poster*/}
+        {posts.map((post) => {
+          return (
+            <div key={post.id} className="p-3">
+              <Post post={post} />
+            </div>
+          );
+        })}
+      </div>
+      {
+        // POSTS
+        <div>
+          posts
+        </div>
+      }
     </div>
   );
 }
-
