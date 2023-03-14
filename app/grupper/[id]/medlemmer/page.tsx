@@ -90,7 +90,7 @@ export default function Members({ params }: any) {
                 setGroup({
                   ...group,
                   followedBy: updatedFollowedBy,
-                  });
+                });
                 updateDoc(doc(firestoreDB, "groups", params.id), {
                   followedBy: updatedFollowedBy,
                 });
@@ -103,12 +103,17 @@ export default function Members({ params }: any) {
                     <div className="text-lightgrey">@{id}</div>
                   </div>
 
-                  {group.createdBy == user.uid ? (
+                  {group.createdBy == user.uid && id != group.createdBy ? (
                     <div
                       className="bg-salmon h-max rounded-full text-white text-md py-0.5 px-4 hover:bg-darksalmon duration-200 cursor-pointer"
                       onClick={() => handleRemoveMember()}
                     >
                       Fjern bruker
+                    </div>
+                  ) : null}
+                  {group.createdBy == id ? (
+                    <div className="bg-yellow h-max rounded-full text-black text-md py-0.5 px-4">
+                      Gruppeeier
                     </div>
                   ) : null}
                 </div>

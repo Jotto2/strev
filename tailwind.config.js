@@ -27,6 +27,7 @@ module.exports = {
         'hoverblue': '#7CC1CD',
         'heartred': '#E36969',
         'commentblue': '#3691D3',
+        'yellow': '#fcefc5',
       },
       fontFamily: {
         'nunito': '@apply font-nunito',
