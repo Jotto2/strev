@@ -11,5 +11,17 @@ export type Activity = {
 }
 
 export type Post = {
-    
+    activityID: string;
+    comments: [{
+        commentedByImage: string;
+        commentedByName: string;
+        text: string;
+    }];
+    createdByEmail: string;
+    createdByImage: string;
+    createdByName: string;
+    date: Date;
+    groupID: string;
+    likedBy: string[];
+    text: string;
 }

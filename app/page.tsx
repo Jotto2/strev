@@ -15,6 +15,7 @@ import "styles/globals.css";
 import Navbar from "components/Navbar";
 import PostCard from "./PostCard";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { Post } from "lib/types";
 
 export const dynamic = "auto",
   dynamicParams = true,
@@ -24,36 +25,37 @@ export const dynamic = "auto",
 async function getPosts() {
   const myCollection = collection(firestoreDB, "posts");
   const querySnapshot = await getDocs(query(myCollection, where("createdByEmail", "!=", "") ));
-  const myArray = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() }; // Add ID to data object
+  const myArray: Post[] = querySnapshot.docs.map((doc) => {
+    return {activityID: doc.data().activityID, comments: doc.data().comments, createdByEmail:doc.data().createdByEmail, createdByImage: doc.data().createdByImage, createdByName: doc.data().createdByName, date: doc.data().date, groupID: doc.data().groupID, likedBy: doc.data().likedBy, text:doc.data().text};
   });
   return myArray;
 }
 
 export default function HomePage() {
 
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const result = await getPosts();
-      setPosts(result);
-    }
+  async function fetchData() {
+    const result: Post[] = await getPosts();
+    setPosts(result);
+  }
+  
+  useEffect(() => {  
     fetchData();
   }, []);
 
   return (
     <div className="pb-32">
-      { /*
+      {
       <div className="grid place-items-center pt-80">
         <h1 className="text-3xl">Velkommen til Strev</h1>
         <p>På denne siden vil du snart få opp innlegg fra de du følger</p>
       </div>
-      */ }
+       }
       {
-        /*posts.map((post, index) => (
-          <PostCard key={index} post={post} />
-        ))*/
+        posts.map((post, index) => (
+          <PostCard key={index} props={post} />
+        ))
       }
 
       <Navbar activeProp={0} />

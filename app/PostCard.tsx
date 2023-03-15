@@ -17,7 +17,7 @@ import { TbHeartFilled, TbHeart } from "react-icons/tb";
 import { FaRegComment, FaComment } from "react-icons/fa";
 import { IoPaperPlaneOutline, IoPaperPlane } from "react-icons/io5";
 import { useAuthContext } from "context/AuthContext";
-import { Activity } from "lib/types";
+import { Activity, Post } from "lib/types";
 
 async function getProgram(id: string) {
   //! TING SKJER FEIL HER
@@ -30,31 +30,49 @@ async function getProgram(id: string) {
   return activityDoc.data();
 }
 
-export default function PostCard({ post }: any) {
-  const {user, loading} = useAuthContext(); //TODO FIX
+type PostCardProps = {
+  props: Post
+}
 
-  console.log("User:")
-  console.log(user)
+export default function PostCard({ props }: PostCardProps) {
+  const { user } = useAuthContext();
 
-  getProgram(post.activityID);
+  getProgram(props.activityID);
 
+  const [post, setPost] = useState<Post>();
+  const [activity, setActivity] = useState<Activity>(); //TODO add when needed
+
+  /*
   const [photoURL, setPhotoURL] = useState(post.createdByImage);
   const [displayName, setDisplayName] = useState(post.createdByName);
   const [email, setEmail] = useState(post.createdByEmail);
   const [text, setText] = useState(post.text);
-  const [activity, setActivity] = useState<Activity>();
-  const [liked, setLiked] = useState(post.likedBy.includes(user.uid));
-  const [likedBy, setLikedBy] = useState(post.likedBy);
+  
+  const [liked, setLiked] = useState(post.likedBy.includes(user.uid));  <--
+  const [likedBy, setLikedBy] = useState(post.likedBy);                 <--
   const [amountOfLikes, setAmountOfLikes] = useState(post.likedBy.length);
   const [comments, setComments] = useState(post.comments);
+  */
 
   const commentInput = useRef(null);
-  const docRef = doc(firestoreDB, "posts", post.id);
+  const docRef = doc(firestoreDB, "posts", post.activityID);
 
   const handleLike = async () => {
-    const newLiked = !liked;
-    setLiked(newLiked);
-    setAmountOfLikes(newLiked ? amountOfLikes + 1 : amountOfLikes - 1);
+    const newLiked = (post.likedBy.includes(user.uid));
+    if(newLiked) {
+      const index = post.likedBy.findIndex((id) => id === user.uid);
+      const tempArr = post.likedBy
+      tempArr.slice(0, index);
+
+      
+    const updatedLikedBy = [..., ...post.likedBy.slice(index + 1)];
+    await updateDoc(docRef, { likedBy: updatedLikedBy });
+
+
+    } else {
+      //TODO Like
+    } //Fetch lengde av array
+    
 
     await updateDoc(docRef, {
       likedBy: newLiked
@@ -97,13 +115,13 @@ export default function PostCard({ post }: any) {
   return (
     <div className="bg-white rounded-xl p-4 max-w-md mx-auto drop-shadow-box mt-20">
       <div className="flex gap-5 items-center mb-5">
-        <img className="rounded-full h-16" src={photoURL} alt="" />
+        <img className="rounded-full h-16" src={props.createdByImage} alt="" />
         <div>
-          <div className="font-bold font-nunito text-xl">{displayName}</div>
-          <div className="font-nunito text-darkgrey">{email}</div>
+          <div className="font-bold font-nunito text-xl">{props.createdByName}</div>
+          <div className="font-nunito text-darkgrey">{props.createdByEmail}</div>
         </div>
       </div>
-      <div className="mb-5 font-lato">{text}</div>
+      <div className="mb-5 font-lato">{props.text}</div>
 
       <div className="mb-5">
         {
@@ -144,12 +162,12 @@ export default function PostCard({ post }: any) {
             <FaComment className="hidden group-hover:block " size="25" />
           </div>
           {comments.length}{" "}
-          {comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
+          {props.comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
         </div>
       </div>
-      {comments.length == 0 ? null : (
+      {props.comments.length == 0 ? null : (
         <div className="border-b-[1.5px] pt-5 overflow-auto max-h-56">
-          {comments.map((comment: any, index) => (
+          {props.comments.map((comment: any, index) => (
             <div key={index} className="flex items-center gap-5 mb-5">
               <img
                 className="rounded-full h-10"
