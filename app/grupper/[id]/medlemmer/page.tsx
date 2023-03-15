@@ -26,13 +26,21 @@ export async function getGroup(id: string) {
   return activityDoc.data() as Group;
 }
 
+interface Member {
+  uid: string,
+  displayName: string,
+  photoURL: string,
+  email: string
+}
+
 interface Group {
   title: string;
   description: string;
-  followedBy: string[];
+  followedBy: Member[];
   id: string;
   createdBy: string;
 }
+
 
 export default function Members({ params }: any) {
   //! any???
@@ -48,7 +56,7 @@ export default function Members({ params }: any) {
     createdBy: "",
   });
 
-  const [members, setMembers] = useState();
+  const [members, setMembers] = useState<Member[]>([]);
 
   const router = useRouter();
 
@@ -76,21 +84,27 @@ export default function Members({ params }: any) {
         </button>
 
         <div className="font-nunito font-bold text-xl">
-          Vi som ikke klarer fjellturer
+          {group.title}
         </div>
         <div className="bg-white rounded-2xl p-5 mt-5 drop-shadow-box">
           <div className="font-nunito font-bold text-xl">Medlemmer</div>
           <div className="flex flex-col mt-3 gap-3">
-            {group.followedBy.map((id, index) => {
+            {group.followedBy.map((member, index) => {
               function handleRemoveMember(): void {
+
+                // Remove member from group
                 const updatedFollowedBy = [
                   ...group.followedBy.slice(0, index),
                   ...group.followedBy.slice(index + 1),
                 ];
+
+                // Update group client side
                 setGroup({
                   ...group,
                   followedBy: updatedFollowedBy,
                 });
+
+                // Update group server side
                 updateDoc(doc(firestoreDB, "groups", params.id), {
                   followedBy: updatedFollowedBy,
                 });
@@ -98,12 +112,15 @@ export default function Members({ params }: any) {
 
               return (
                 <div key={index} className="flex justify-between items-center">
-                  <div className="font-nunito font-semibold">
-                    <div>{id}</div>
-                    <div className="text-lightgrey">@{id}</div>
+                  <div className="flex items-center gap-3">
+                    <img className="rounded-full w-10 h-10" src={member.photoURL} />
+                    <div className="font-nunito font-semibold">
+                      <div>{member.displayName}</div>
+                      <div className="text-lightgrey">{member.email}</div>
+                    </div>
                   </div>
 
-                  {group.createdBy == user.uid && id != group.createdBy ? (
+                  {group.createdBy == user.uid && member.uid != group.createdBy ? (
                     <div
                       className="bg-salmon h-max rounded-full text-white text-md py-0.5 px-4 hover:bg-darksalmon duration-200 cursor-pointer"
                       onClick={() => handleRemoveMember()}
@@ -111,7 +128,7 @@ export default function Members({ params }: any) {
                       Fjern bruker
                     </div>
                   ) : null}
-                  {group.createdBy == id ? (
+                  {group.createdBy == member.uid ? (
                     <div className="bg-yellow h-max rounded-full text-black text-md py-0.5 px-4">
                       Gruppeeier
                     </div>
