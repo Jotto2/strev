@@ -15,12 +15,10 @@ import Navbar from "components/Navbar";
 import StreakComponent from "app/streak/StreakComponent";
 export default function page() {
 
-
-
   return (
     <div className="pb-32 ">
         <div className="flex center ">
-          <StreakComponent />
+          <StreakComponent/>
          </div>
       <div className="grid place-items-center pt-80">
         <h1 className="text-3xl">Velkommen til Strev</h1>
