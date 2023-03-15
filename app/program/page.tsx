@@ -9,6 +9,7 @@ import Navbar from "components/Navbar";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useAuthContext } from "context/AuthContext";
+import { Activity } from "lib/types";
 
 export const dynamic = "auto",
   dynamicParams = true,
@@ -22,8 +23,8 @@ async function getProgram(user) {
   const querySnapshot = await getDocs(
     query(myCollection, where("createdBy", "==", user.uid))
   );
-  const myArray = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() };
+  const myArray = querySnapshot.docs.map((doc): Activity => {
+    return {id: doc.id, title: doc.data().title, category: doc.data().category, description: doc.data().description, createdBy: doc.data().createdBy, imageURL: doc.data().imageURL, madeByName: doc.data().madeByName, followedBy: doc.data().followedBy, isPublic: doc.data().isPublic}
   });
   console.log(myArray);
   return myArray;
@@ -35,16 +36,16 @@ async function getFollowedActivities(user) {
   const querySnapshot = await getDocs(
     query(myCollection, where("followedBy", "array-contains", user.uid))
   );
-  const myArray = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() };
+  const myArray: Activity[] = querySnapshot.docs.map((doc): Activity => {
+    return {id: doc.id, title: doc.data().title, category: doc.data().category, description: doc.data().description, createdBy: doc.data().createdBy, imageURL: doc.data().imageURL, madeByName: doc.data().madeByName, followedBy: doc.data().followedBy, isPublic: doc.data().isPublic}
   });
   console.log(myArray);
   return myArray;
 }
 
 export default function ProgramPage() {
-  const [activity, setActivity] = useState([]);
-  const [followedActivity, setFollowedActivity] = useState([]);
+  const [activity, setActivity] = useState<Activity[]>([]);
+  const [followedActivity, setFollowedActivity] = useState<Activity[]>([]);
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -75,26 +76,26 @@ export default function ProgramPage() {
             </div>
       <div className="max-w-md mx-auto">
         <h2 className="pt-5">Mine aktiviteter</h2>
-        {activity.map((activity, index) => {
+        {activity.map((item) => {
           return (
             <div
               className="p-3"
-              key={index}
+              key={item.id}
             >
-              <ActivityCard props={activity} />
+              <ActivityCard props={item} />
             </div>
           );
         })}
 
         <h2 className="pt-5">Aktiviteter du følger</h2>
     
-        {followedActivity.map((activity) => {
+        {followedActivity.map((item) => {
           return (
             <div
-              className="p-3
-          "
+              className="p-3"
+              key={item.id}
             >
-              <ActivityCard key={activity.id} props={activity} />
+              <ActivityCard props={item} />
             </div>
           );
         })}

@@ -12,33 +12,13 @@ import { collection, getDoc, updateDoc } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
 import { doc } from "firebase/firestore";
 import { useAuthContext } from "context/AuthContext";
-
-export type Activity = {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  createdBy: string;
-  imageURL: string;
-  madeByName: string;
-  followedBy: string[];
-  isPublic: boolean;
-}
+import { Activity } from "lib/types";
 
 type ActivityProps = {
-  id,
-  title,
-  category,
-  description,
-  createdBy,
-  imageURL,
-  madeByName,
-  followedBy,
-  isPublic,
+  props: Activity
 }
 
-
-export default function ActivityCard( props : Activity ) {
+export default function ActivityCard({ props }: ActivityProps) {
   //Her må bilde også importeres
 
   const { user } = useAuthContext();

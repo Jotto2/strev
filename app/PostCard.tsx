@@ -12,11 +12,12 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import ActivityCard, { Activity } from "./program/ActivityCard";
+import ActivityCard from "./program/ActivityCard";
 import { TbHeartFilled, TbHeart } from "react-icons/tb";
 import { FaRegComment, FaComment } from "react-icons/fa";
 import { IoPaperPlaneOutline, IoPaperPlane } from "react-icons/io5";
 import { useAuthContext } from "context/AuthContext";
+import { Activity } from "lib/types";
 
 async function getProgram(id: string) {
   //! TING SKJER FEIL HER
