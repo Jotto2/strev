@@ -230,7 +230,8 @@ export default function Group({ params }: any) {
         <div className="w-full max-w-md mx-auto fixed bottom-24">
           <div
             className="bg-salmon rounded-full w-max h-max p-4 hover:bg-darksalmon duration-200 cursor-pointer absolute right-4 bottom-4"
-            onClick={() => handleCreatePost()}
+            onClick={() => {window.location.href = "/opprett-innlegg";
+            }}
           >
             <img className="w-10" src="/plus-icon.svg" alt="" />
           </div>
