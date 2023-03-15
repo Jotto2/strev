@@ -26,10 +26,17 @@ export async function getGroup(id: string) {
   return activityDoc.data() as Group;
 }
 
+interface Member {
+  uid: string;
+  displayName: string;
+  photoURL: string;
+  email: string;
+}
+
 interface Group {
   title: string;
   description: string;
-  followedBy: string[];
+  followedBy: Member[];
   id: string;
   createdBy: string;
 }
@@ -64,14 +71,9 @@ export default function Group({ params }: any) {
 
   //Ordner følging
   useEffect(() => {
-    async function fetchActivity() {
-      const data = await getGroup(params.id);
-      setGroup(data);
-      const posts = await getPosts();
-      setPosts(posts);
-    }
-    fetchActivity();
-    const checkFollowStatus = async () => {
+    const fetchGroupAndCheckFollowStatus = async () => {
+      const groupData = await getGroup(params.id);
+      setGroup(groupData);
       const followerRef = doc(firestoreDB, `groups/${params.id}`);
       const followerSnap = await getDoc(followerRef);
 
@@ -79,16 +81,23 @@ export default function Group({ params }: any) {
         const followerData = followerSnap.data();
 
         if (followerData?.followedBy) {
-          setIsSubscribed(followerData.followedBy.includes(user.uid));
+          groupData.followedBy.forEach((member) => {
+            if (member.uid === user.uid) {
+              setIsSubscribed(true);
+            }
+          });
         }
       }
     };
-    checkFollowStatus();
-  }, [params.id, user.uid]);
+
+    fetchGroupAndCheckFollowStatus();
+  }, [params.id, user.uid, isSubscribed]);
+
+
 
   // Oppdaterer følge-knappen basert på om du følger eller ikke
-  const updateFollower = async () => {
-    if (user.uid === group.createdBy) return;
+  const updateFollower = async (member: Member) => {
+    if (member.uid === group.createdBy) return;
 
     const followerRef = doc(firestoreDB, `groups/${params.id}`);
     const followerSnap = await getDoc(followerRef);
@@ -97,17 +106,19 @@ export default function Group({ params }: any) {
       const followerData = followerSnap.data();
 
       if (followerData?.followedBy) {
-        // If followedBy array already exists, check if user ID is present in it
-        const index = followerData.followedBy.indexOf(user.uid);
+        // If followedBy array already exists, check if member is present in it
+        const index = followerData.followedBy.findIndex(
+          (m) => m.uid === member.uid
+        );
 
         if (index === -1) {
-          // User ID not present in followedBy array, so add it
+          // member not present in followedBy array, so add it
           await updateDoc(followerRef, {
-            followedBy: [...followerData.followedBy, user.uid],
+            followedBy: [...followerData.followedBy, member],
           });
           setIsSubscribed(true);
         } else {
-          // User ID present in followedBy array, so remove it
+          // member present in followedBy array, so remove it
           const updatedFollowedBy = [
             ...followerData.followedBy.slice(0, index),
             ...followerData.followedBy.slice(index + 1),
@@ -119,9 +130,9 @@ export default function Group({ params }: any) {
           setIsSubscribed(false);
         }
       } else {
-        // If followedBy array does not exist, create it and add user ID
+        // If followedBy array does not exist, create it and add member
         await updateDoc(followerRef, {
-          followedBy: [user.uid],
+          followedBy: [member],
         });
         setIsSubscribed(true);
       }
@@ -183,7 +194,14 @@ export default function Group({ params }: any) {
                   ? "bg-background hover:bg-lightgrey"
                   : "bg-lightblue hover:bg-hoverblue"
               }`}
-              onClick={updateFollower}
+              onClick={() =>
+                updateFollower({
+                  uid: user.uid,
+                  displayName: user.displayName,
+                  photoURL: user.photoURL,
+                  email: user.email,
+                })
+              }
             >
               {isSubscribed ? "Følger" : "Følg"}
             </button>
