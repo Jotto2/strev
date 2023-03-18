@@ -50,23 +50,23 @@ export default function CreateProgression() {
           </div>
         </button>
         <div className="rounded-xl bg-white p-4 drop-shadow-box mt-10">
-          <h2 className="text-xl pt-4 mb-3">Ny øvelse</h2>
+          <h2 className="text-xl mb-3">Ny øvelse</h2>
           <form onSubmit={handleCreateProgression}>
             <input
               className="bg-background rounded-xl outline-none p-3 font-lato font-normal border-[1px] border-darkgrey w-full mb-4"
               type="text"
-              placeholder="Tittel"
+              placeholder="Tittel, eks. Knebøy"
               ref={titleRef}
             />
             <textarea
-              className="bg-background rounded-xl outline-none p-3 font-lato font-normal border-[1px] border-darkgrey w-full resize-y mb-4"
-              placeholder="Beskrivelse"
+              className="bg-background rounded-xl outline-none p-3 font-lato font-normal border-[1px] border-darkgrey w-full resize-y mb-3"
+              placeholder="Beskrivelse, eks. 4x12 reps"
               ref={descriptionRef}
             />
             <input
               className="bg-background rounded-xl outline-none p-3 font-lato font-normal border-[1px] border-darkgrey w-full mb-4"
               type="text"
-              placeholder="Måleenhet"
+              placeholder="Måleenhet, eks. kg"
               ref={unitRef}
             />
             <button

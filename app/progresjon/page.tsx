@@ -28,16 +28,11 @@ async function getProgressionIds(user) {
 export default function ProgressionPage() {
   const { user } = useAuthContext();
 
-  // EGEN COLLECITON FOR PROGRESSION
-  // EGET DOKUMENT FOR HVER BRUKER
-  // DOKUMENTET HAR ALLE PROGRESSIONSØVELSER TIL BRUKEREN
-
-  // ^^ upraktisk
-
   const [progressionIds, setProgressionIds] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
+      console.log("fetching data");
       const result = await getProgressionIds(user);
       setProgressionIds(result);
     }
@@ -60,8 +55,15 @@ export default function ProgressionPage() {
         </button>
 
         {
+          progressionIds.length === 0 ? (
+            <div className="text-center text-darkgrey font-lato text-lg mt-5">
+              Du har ingen øvelser du kan måle progresjonen på enda. Trykk på knappen over for å opprette en ny.
+            </div>
+          ) : null
+        }
+
+        {
           progressionIds?.map((id, index) => {
-            console.log(typeof id)
             return (
               <ProgressionCard key={index} id={id} />
             )
