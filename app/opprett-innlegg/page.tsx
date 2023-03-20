@@ -14,7 +14,11 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { group } from "console";
 
-export default function CreatePost(id: string) {
+type createPostProps = {
+  id: string
+}
+
+export default function CreatePost({id}) {
   const router = useRouter();
   //const [title, setTitle] = useState("");
 
@@ -96,7 +100,7 @@ export default function CreatePost(id: string) {
         createdByName: user.displayName,
         createdByImage: user.photoURL,
         date: new Date(),
-        groupID:"",
+        groupID: id,
         likedBy:[],
         text: "",
         

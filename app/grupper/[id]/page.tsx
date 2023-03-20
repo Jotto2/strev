@@ -19,6 +19,7 @@ import Link from "next/link";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { FiUser } from "react-icons/fi";
 import { IoInformationCircleSharp } from "react-icons/io5";
+import CreatePost from "@/opprett-innlegg/page";
 
 export async function getGroup(id: string) {
   const activityRef = doc(firestoreDB, "groups", id);
@@ -237,14 +238,16 @@ export default function Group({ params }: any) {
         <div className="w-full max-w-md mx-auto fixed bottom-24">
           <div
             className="bg-salmon rounded-full w-max h-max p-4 hover:bg-darksalmon duration-200 cursor-pointer absolute right-4 bottom-4"
-            onClick={() => {handleToggle; //egentlig å sende IDen til gruppa med opprett-innlegg kallet 
+            onClick={() => {handleToggle(); //egentlig å sende IDen til gruppa med opprett-innlegg kallet 
             }}
           >
             <img className="w-10" src="/plus-icon.svg" alt="" />
-            {toggle &&
-              <h1>Dette er komponenten for opprett innlegg!!!</h1>
-            }
+            
           </div>
+          <div>
+  {toggle && <CreatePost id = {group.id} />}
+    </div>
+
         </div>
       </div>
     </div>
