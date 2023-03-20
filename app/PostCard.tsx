@@ -42,17 +42,17 @@ export default function PostCard({ props }: PostCardProps) {
   const [post, setPost] = useState<Post>();
   const [activity, setActivity] = useState<Activity>(); //TODO add when needed
 
-  /*
+  
   const [photoURL, setPhotoURL] = useState(post.createdByImage);
   const [displayName, setDisplayName] = useState(post.createdByName);
   const [email, setEmail] = useState(post.createdByEmail);
   const [text, setText] = useState(post.text);
   
-  const [liked, setLiked] = useState(post.likedBy.includes(user.uid));  <--
-  const [likedBy, setLikedBy] = useState(post.likedBy);                 <--
+  const [liked, setLiked] = useState(post.likedBy.includes(user.uid));  
+  const [likedBy, setLikedBy] = useState(post.likedBy);                 
   const [amountOfLikes, setAmountOfLikes] = useState(post.likedBy.length);
   const [comments, setComments] = useState(post.comments);
-  */
+  
 
   const commentInput = useRef(null);
   const docRef = doc(firestoreDB, "posts", post.activityID);
@@ -64,7 +64,7 @@ export default function PostCard({ props }: PostCardProps) {
       const tempArr = post.likedBy
       tempArr.slice(0, index);
 
-      
+
     const updatedLikedBy = [..., ...post.likedBy.slice(index + 1)];
     await updateDoc(docRef, { likedBy: updatedLikedBy });
 
@@ -88,14 +88,11 @@ export default function PostCard({ props }: PostCardProps) {
       return;
     }
 
-    setComments([
-      ...comments,
-      {
-        commentedByName: user.displayName,
+  let oldArr = comments;
+  oldArr.push({commentedByName: user.displayName,
         commentedByImage: user.photoURL,
-        text: commentInput.current.value,
-      },
-    ]);
+        text: commentInput.current.value });
+  setComments(oldArr);
 
     commentInput.current.value == ""
       ? null
@@ -165,7 +162,7 @@ export default function PostCard({ props }: PostCardProps) {
           {props.comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
         </div>
       </div>
-      {props.comments.length == 0 ? null : (
+      {comments.length == 0 ? null : (
         <div className="border-b-[1.5px] pt-5 overflow-auto max-h-56">
           {props.comments.map((comment: any, index) => (
             <div key={index} className="flex items-center gap-5 mb-5">
