@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { group } from "console";
 
-export default function CreatePost() {
+export default function CreatePost(id: string) {
   const router = useRouter();
   //const [title, setTitle] = useState("");
 

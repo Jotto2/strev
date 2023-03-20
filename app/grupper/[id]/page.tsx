@@ -57,6 +57,13 @@ export default function Group({ params }: any) {
   const auth = getAuth();
   const user = auth.currentUser;
 
+  const [toggle, setToggle] = useState<boolean>(false);
+
+  const handleToggle = () => {
+    setToggle(!toggle);
+    console.log("Handle Toggle!");
+  }
+
   //Henter alle postene i en gruppe
   async function getPosts() {
     const myCollection = collection(firestoreDB, "posts");
@@ -230,10 +237,13 @@ export default function Group({ params }: any) {
         <div className="w-full max-w-md mx-auto fixed bottom-24">
           <div
             className="bg-salmon rounded-full w-max h-max p-4 hover:bg-darksalmon duration-200 cursor-pointer absolute right-4 bottom-4"
-            onClick={() => {window.location.href = "/opprett-innlegg";
+            onClick={() => {handleToggle; //egentlig å sende IDen til gruppa med opprett-innlegg kallet 
             }}
           >
             <img className="w-10" src="/plus-icon.svg" alt="" />
+            {toggle &&
+              <h1>Dette er komponenten for opprett innlegg!!!</h1>
+            }
           </div>
         </div>
       </div>
