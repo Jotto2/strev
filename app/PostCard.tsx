@@ -65,7 +65,7 @@ export default function PostCard({ props }: PostCardProps) {
       tempArr.slice(0, index);
 
 
-    const updatedLikedBy = [..., ...post.likedBy.slice(index + 1)];
+    const updatedLikedBy = [...post.likedBy, ...post.likedBy.slice(index + 1)];
     await updateDoc(docRef, { likedBy: updatedLikedBy });
 
 
