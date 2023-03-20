@@ -51,7 +51,7 @@ export default function Profil() {
           </div>
         </div>
       </div>
-      <Navbar activeProp={4} />
+      <Navbar activeProp={5} />
     </div>
   );
 }
