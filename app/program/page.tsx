@@ -64,7 +64,7 @@ export default function ProgramPage() {
       <div className="max-w-md mx-auto pt-5">
       <button
               onClick={() => { window.location.href="/opprett-program" }}
-              className="bg-salmon mb-4 text-white text-md text-left rounded-2xl w-full p-1 py-5 inline-flex items-center"
+              className="bg-salmon mb-4 text-white text-md text-left rounded-2xl w-full p-1 py-5 inline-flex items-center hover:bg-darksalmon duration-100 font-semibold"
             >
               <span className=" pl-5 text-xl">Lag nytt treningsprogram</span>
               <div className="ml-auto pr-3">
