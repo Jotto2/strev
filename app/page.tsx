@@ -1,4 +1,3 @@
-
 "use client";
 import Head from "next/head";
 import Image from "next/image";
@@ -110,7 +109,10 @@ async function getFollowedActivitiesPosts(currentUserId) {
   // Query the 'activity' collection to get documents where the 'followedBy' array contains the current user's ID
   const activitiesCollection = collection(firestoreDB, "activity");
   const activitiesQuerySnapshot = await getDocs(
-    query(activitiesCollection, where("followedBy", "array-contains", currentUserId))
+    query(
+      activitiesCollection,
+      where("followedBy", "array-contains", currentUserId)
+    )
   );
 
   // Extract the activity IDs from the fetched documents
@@ -134,9 +136,15 @@ async function getFollowedActivitiesPosts(currentUserId) {
 async function getCombinedPosts(currentUserId) {
   const followedUsersPosts = await getFollowedUsersPosts(currentUserId);
   const followedGroupsPosts = await getFollowedGroupsPosts(currentUserId);
-  const followedActivitiesPosts = await getFollowedActivitiesPosts(currentUserId);
+  const followedActivitiesPosts = await getFollowedActivitiesPosts(
+    currentUserId
+  );
 
-  const combinedPosts = [...followedUsersPosts, ...followedGroupsPosts, ...followedActivitiesPosts];
+  const combinedPosts = [
+    ...followedUsersPosts,
+    ...followedGroupsPosts,
+    ...followedActivitiesPosts,
+  ];
 
   // Remove duplicate posts
   const uniquePostsMap = new Map(combinedPosts.map((post) => [post.id, post]));
@@ -154,18 +162,75 @@ export default function HomePage() {
 
   const [posts, setPosts] = useState([]);
 
-
   useEffect(() => {
     async function fetchData() {
       const result = await getCombinedPosts(user.uid);
       setPosts(result);
+      setAllPosts(result);
       console.log(result);
     }
     fetchData();
-  });
+  }, [posts]);
+
+  const [allPosts, setAllPosts] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState('Alle');
+
+  const filterPostsByActivityName = (activityName) => {
+    console.log(activityName);
+    setSelectedFilter(activityName);
+    if (activityName === 'Alle') {
+      setPosts(allPosts);
+    } else {
+      const filteredPosts = allPosts.filter(post => post.activityName === activityName);
+      setPosts(filteredPosts);
+    }
+  };
+
+  const buttonStyle = (activityName) => (
+    selectedFilter === activityName
+      ? { backgroundColor: 'salmon', color: 'white' }
+      : {}
+  );
 
   return (
     <div className="pb-32">
+      <div className="w-full mx-auto flex justify-center pt-5">
+        
+        
+        <button
+          type="button"
+          className="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+          onClick={() => filterPostsByActivityName('Alle') }
+          style={buttonStyle('Alle')}
+        >
+          Alle
+        </button>
+        <button
+          type="button"
+          className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+          onClick={() => filterPostsByActivityName('Styrke')}
+          style={buttonStyle('Styrke')}
+        >
+          Styrke
+        </button>
+        <button
+          type="button"
+          className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+          onClick={() => filterPostsByActivityName('Cardio')}
+          style={buttonStyle('Cardio')}
+        >
+          Cardio
+        </button>
+        <button
+          type="button"
+          className="relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
+          onClick={() => filterPostsByActivityName('Bevegelse')}
+          style={buttonStyle('Bevegelse')}
+        >
+          Bevegelse
+        </button>
+  
+      </div>
       {posts.map((post) => (
         <PostCard
           key={post.id}

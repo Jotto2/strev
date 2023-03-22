@@ -130,7 +130,7 @@ export default function ActivityCard( props : Activity ) {
       ) : (
         
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <Link href={`/program/${props.createdBy}`}>
+          <Link href={`/profil/${props.createdBy}`}>
           <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
           <div className="flex justify-end">
             <h4 className="text-white text-sm truncate">
