@@ -1,3 +1,4 @@
+
 "use client";
 import Link from "next/link";
 import next from "next";
@@ -12,13 +13,33 @@ import { collection, getDoc, updateDoc } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
 import { doc } from "firebase/firestore";
 import { useAuthContext } from "context/AuthContext";
-import { Activity } from "lib/types";
 
-type ActivityProps = {
-  props: Activity
+export type Activity = {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  createdBy: string;
+  imageURL: string;
+  madeByName: string;
+  followedBy: string[];
+  isPublic: boolean;
 }
 
-export default function ActivityCard({ props }: ActivityProps) {
+type ActivityProps = {
+  id,
+  title,
+  category,
+  description,
+  createdBy,
+  imageURL,
+  madeByName,
+  followedBy,
+  isPublic,
+}
+
+
+export default function ActivityCard( props : Activity ) {
   //Her må bilde også importeres
 
   const { user } = useAuthContext();
@@ -107,7 +128,9 @@ export default function ActivityCard({ props }: ActivityProps) {
       ) : props.isPublic === false ? (
         <div></div>
       ) : (
+        
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
+          <Link href={`/program/${props.createdBy}`}>
           <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
           <div className="flex justify-end">
             <h4 className="text-white text-sm truncate">
@@ -117,6 +140,7 @@ export default function ActivityCard({ props }: ActivityProps) {
               <img className="rounded-full h-5" src={props.imageURL}></img>
             </div>
           </div>
+          </Link>
         </div>
       )}
 
@@ -185,3 +209,5 @@ export default function ActivityCard({ props }: ActivityProps) {
     </div>
   );
 }
+
+
