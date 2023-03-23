@@ -27,7 +27,7 @@ export default function ProgramPage() {
   async function getProgram() {
     const myCollection = collection(firestoreDB, "activity");
     const querySnapshot = await getDocs(
-      query(myCollection, where("createdBy", "==", user.uid))
+      query(myCollection, where("createdBy", "!=", user.uid))
     );
     const myArray: Activity[] = querySnapshot.docs.map((doc): Activity => {
       console.log("Dette er doc: "+doc)
