@@ -1,4 +1,3 @@
-
 "use client";
 import ActivityCard from "@/program/ActivityCard";
 import Navbar from "components/Navbar";
@@ -16,7 +15,6 @@ import {
 import { firestoreDB } from "lib/firebase";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 
 interface User {
   name: string;
@@ -48,7 +46,6 @@ async function getUser(id) {
   }
 }
 
-
 async function getActivitiesByUser(userId) {
   // Query the 'activity' collection to get documents where the 'createdBy' property matches the inputted userId
   const activitiesCollection = collection(firestoreDB, "activity");
@@ -66,19 +63,18 @@ async function getActivitiesByUser(userId) {
 }
 
 export default function ProfilePage({ params }: any) {
-
   const router = useRouter();
   //get a user id from the url and retrieve the firestore document with that id
-  const [userProfile, setUser] = useState({});
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const { user } = useAuthContext();
   const [activityList, setActivityList] = useState([]);
-
+  const [userProfile, setUserProfile] = useState({});
 
   useEffect(() => {
     async function getUserProfile() {
+      const userProfile = await getUser(params.id);
       const user = await getActivitiesByUser(params.id);
       setActivityList(user);
+      setUserProfile(userProfile);
     }
     getUserProfile();
   }, []);
@@ -87,7 +83,7 @@ export default function ProfilePage({ params }: any) {
     setIsSubscribed(!isSubscribed);
 
     //Get the current users profile
-    const followerRefUser = doc(firestoreDB, `users/${user.uid}`);
+    const followerRefUser = doc(firestoreDB, `users/${userProfile.uid}`);
     const followerSnapUser = await getDoc(followerRefUser);
 
     //Get the profile of the users page
@@ -98,12 +94,12 @@ export default function ProfilePage({ params }: any) {
       const followerData = followerSnap.data();
       if (followerData?.followedBy) {
         // If followedBy array already exists, check if user ID is present in it
-        const index = followerData.followedBy.indexOf(user.uid);
+        const index = followerData.followedBy.indexOf(userProfile.uid);
 
         if (index === -1) {
           // User ID not present in followedBy array, so add it
           await updateDoc(followerRef, {
-            followedBy: [...followerData.followedBy, user.uid],
+            followedBy: [...followerData.followedBy, userProfile.uid],
           });
           await updateDoc(followerRefUser, {
             follows: [...followerData.follows, params.id],
@@ -140,15 +136,11 @@ export default function ProfilePage({ params }: any) {
   }
 
   async function getActivities() {
-
-    
-
     // console.log("activityList", activityList);
     // const activityArray = [];
     // for (let i = 0; i < activityList.length; i++) {
     //   const activityRef = doc(firestoreDB, `activities/${activityList[i]}`);
     //   const activitySnap = await getDoc(activityRef);
-
     //   if (activitySnap.exists()) {
     //     const activityData = activitySnap.data();
     //     activityArray.push(activityData);
@@ -161,7 +153,7 @@ export default function ProfilePage({ params }: any) {
   return (
     <div>
       <div className="pb-32 bg-background h-screen pt-32 px-5 max-w-md mx-auto">
-      <button
+        <button
           className="flex p-1 my-5 "
           type="button"
           onClick={() => router.back()}
@@ -171,13 +163,12 @@ export default function ProfilePage({ params }: any) {
           </div>
           <p className="text-md pl-2 font-nunito">Gå tilbake</p>
         </button>
-      
+
         <div className="rounded-2xl bg-white max-w-md mx-auto p-6 drop-shadow-box">
-          
           <div>
             <img
               className="w-40 h-40 mx-auto relative rounded-full -mt-20"
-              src={user.photoURL}
+              src={userProfile.photoURL}
               height={160}
               width={160}
               alt={""}
@@ -186,14 +177,14 @@ export default function ProfilePage({ params }: any) {
             <div className="mb-5 mt-8">
               <span className="text-xl text-lightgrey  block">Navn</span>
               <span className="text-xl text-darkgrey">
-                {user.displayName}
+                {userProfile.name}
               </span>{" "}
               {/* TODO logikk */}
             </div>
             <div className="mb-5">
               <span className="text-xl text-lightgrey  block">Epost</span>
               <span className="text-xl text-darkgrey  max-w-xs">
-                {user.email}
+                {userProfile.email}
               </span>{" "}
               {/* TODO logikk */}
             </div>
@@ -212,24 +203,29 @@ export default function ProfilePage({ params }: any) {
             </button>
           </div>
         </div>
-        <h2 className="pt-5">Aktiviteter laget av {user.displayName}</h2>
+        <h2 className="pt-5 pb-5">
+          Aktiviteter laget av {userProfile.name}
+        </h2>
 
-        {// if activityList is not empty, map through it and display the activities}
-        activityList.length > 0 ? (
-          activityList.map((activity) => {
-            return (
-              <ActivityCard key={activity.id} props={activity} />
-            );
-          })
-        ) : (
-          <p className="text-center pt-4">Ingen aktiviteter å vise for denne brukeren</p>
-        )
-          }
-        
+        {
+          // if activityList is not empty, map through it and display the activities}
+          activityList.length > 0 ? (
+            activityList.map((activity) => {
+              return (
+                <div className="py-2" key={activity.id}>
+                  <ActivityCard props={activity} />
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-center pt-6">
+              Ingen aktiviteter å vise for denne brukeren
+            </p>
+          )
+        }
       </div>
 
       <Navbar activeProp={4} />
     </div>
   );
 }
-
