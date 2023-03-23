@@ -106,7 +106,7 @@ export default function StreakComponent() {
   }, [dateArray]);
 
   return (
-    <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-16">
+    <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-16 z-50">
       {isVisible && (
         <div className="bg-salmon rounded-2xl max-w-md mx-auto grid gap-2 p-3 relative shadow-md ease-in-out">
           <div className="flex items-center justify-center w-42 h-10">
