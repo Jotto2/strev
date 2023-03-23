@@ -47,10 +47,10 @@ async function getUser(id) {
 }
 
 async function getActivitiesByUser(userId) {
-  // Query the 'activity' collection to get documents where the 'createdBy' property matches the inputted userId
+  // Query the 'activity' collection to get documents where the 'createdBy' property matches the inputted userId and 'isPublic' is true
   const activitiesCollection = collection(firestoreDB, "activity");
   const activitiesQuerySnapshot = await getDocs(
-    query(activitiesCollection, where("createdBy", "==", userId))
+    query(activitiesCollection, where("createdBy", "==", userId), where("isPublic", "==", true))
   );
 
   // Convert querySnapshot to an array of activity objects

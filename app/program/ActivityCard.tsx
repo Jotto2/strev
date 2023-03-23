@@ -143,7 +143,7 @@ export default function ActivityCard({props}: ActivityCardProps) {
       </div>
       <div className="grid grid-cols-3 gap-4 pt-5 m-3">
         <div className="flex flex-col justify-center items-center">
-          <img className="max-h-20" src="./Lifting-Icon.png"></img>
+          <img className="max-h-20" src="/Lifting-Icon.png"></img>
         </div>
         <div className="col-span-2 flex items-center">
           <div>
@@ -168,7 +168,7 @@ export default function ActivityCard({props}: ActivityCardProps) {
             <div className="flex flex-row justify-center items-center">
               <div>Se hele</div>
               <div className="ml-2">
-                <img src="./arrow.svg" className="h-1.5" alt="Arrow Icon" />
+                <img src="/arrow.svg" className="h-1.5" alt="Arrow Icon" />
               </div>
             </div>
           </button>
@@ -194,7 +194,7 @@ export default function ActivityCard({props}: ActivityCardProps) {
             <div className="flex flex-row justify-center items-center">
               <div>Se hele</div>
               <div className="ml-2">
-                <img src="./arrow.svg" className="h-1.5" alt="Arrow Icon" />
+                <img src="/arrow.svg" className="h-1.5" alt="Arrow Icon" />
               </div>
             </div>
           </button>
