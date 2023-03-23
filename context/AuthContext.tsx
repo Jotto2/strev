@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: any) => {
       const userRef = doc(collection(firestoreDB, "users"), user.uid);
       // Check if the document already exists
       const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
+      if (userDoc.exists() && userDoc.data().uid === user.uid) {
         console.log("Document already exists:", userDoc.data());
         return; // Stop execution if the document already exists
       }
