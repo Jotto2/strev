@@ -109,7 +109,7 @@ export default function ActivityCard({props}: ActivityCardProps) {
     >
       {user.uid === props.createdBy && props.isPublic === true ? (
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
-          <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
+          <h4 className="text-white text-sm">{props.followedBy.length} {props.followedBy.length == 1 ? 'følger' : 'følgere'}</h4>
           <div className="flex justify-end pr-2">
             <h3 className="bg-yellow rounded-full px-5 text-sm text-right">
               Delt
@@ -122,7 +122,7 @@ export default function ActivityCard({props}: ActivityCardProps) {
         
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
          
-          <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
+          <h4 className="text-white text-sm">{props.followedBy.length} {props.followedBy.length == 1 ? 'følger' : 'følgere'}</h4>
           <a href={`/profil/${props.createdBy}`}>
           <div className="flex justify-end">
          
