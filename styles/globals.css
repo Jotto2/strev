@@ -13,4 +13,7 @@
     button {
         @apply  font-nunito font-bold;
     }
+    html {
+        @apply bg-background;
+    }
 }

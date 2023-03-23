@@ -1,7 +1,15 @@
 /* eslint-disable react/jsx-key */
 import { useState } from "react";
+import internal from "stream";
 
 export default function InspectActivity() {
+
+  type ExerciseObj = {
+    name: string,
+    sets: number,
+    reps: number,
+    weight: number
+  }
 
   const [ownActivity, setOwnActivity] = useState<boolean>(true)
   const [activityUser, setActivityUser] = useState<string>("torgeirsmed");
@@ -10,7 +18,7 @@ export default function InspectActivity() {
   const [activityType, setActivityType] = useState<string>("styrketrening")
   const [activityPublic, setActivityPublic] = useState<boolean>(false)
   const [activityDays, setActivityDays] = useState<boolean[]>([true, false, false, true, true, false, false])
-  const [activityExercises, setActivityExercises] = useState<object[]>([
+  const [activityExercises, setActivityExercises] = useState<ExerciseObj[]>([
     {
       name: "Benkpress",
       sets: 70,
