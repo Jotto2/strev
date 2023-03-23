@@ -238,7 +238,7 @@ export default function Group({ params }: any) {
         {posts.map((post) => {
           return (
             <div key={post.id} className="p-3">
-              <PostCard post={post} />
+              <PostCard props={post}/>
             </div>
           );
         })}

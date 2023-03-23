@@ -23,6 +23,7 @@ import {
 } from "firebase/firestore";
 import { Post } from "lib/types";
 import StreakComponent from "./streak/StreakComponent";
+import CreatePostActual from "./opprett-innlegg/page";
 
 export const dynamic = "auto",
   dynamicParams = true,
@@ -61,10 +62,9 @@ async function getFollowedUsersPosts(currentUserId) {
   );
 
   // Convert querySnapshot to an array of post objects
-  const postsArray = querySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() };
+  const postsArray: Post[] = querySnapshot.docs.map((doc): Post => {
+    return {id: doc.id, activityID: doc.data().activityID, comments:doc.data().comments, createdByEmail: doc.data().createdByEmail, createdByImage: doc.data().createdByImage, createdByName: doc.data().createdByName, createdById: doc.data().createdById, date: doc.data().date, groupID: doc.data().groupID, likedBy: doc.data().likedBy, text: doc.data().text};
   });
-
   console.log(postsArray);
   return postsArray;
 }
@@ -98,8 +98,8 @@ async function getFollowedGroupsPosts(currentUserId) {
   );
 
   // Convert querySnapshot to an array of post objects
-  const postsArray = postsQuerySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() };
+  const postsArray: Post[] = postsQuerySnapshot.docs.map((doc): Post => {
+    return {id: doc.id, activityID: doc.data().activityID, comments:doc.data().comments, createdByEmail: doc.data().createdByEmail, createdByImage: doc.data().createdByImage, createdByName: doc.data().createdByName, createdById: doc.data().createdById, date: doc.data().date, groupID: doc.data().groupID, likedBy: doc.data().likedBy, text: doc.data().text};
   });
 
   console.log(postsArray);
@@ -126,8 +126,8 @@ async function getFollowedActivitiesPosts(currentUserId) {
   );
 
   // Convert querySnapshot to an array of post objects
-  const postsArray = postsQuerySnapshot.docs.map((doc) => {
-    return { id: doc.id, ...doc.data() };
+  const postsArray: Post[] = postsQuerySnapshot.docs.map((doc): Post => {
+    return {id: doc.id, activityID: doc.data().activityID, comments:doc.data().comments, createdByEmail: doc.data().createdByEmail, createdByImage: doc.data().createdByImage, createdByName: doc.data().createdByName, createdById: doc.data().createdById, date: doc.data().date, groupID: doc.data().groupID, likedBy: doc.data().likedBy, text: doc.data().text};
   });
 
   console.log(postsArray);
@@ -162,6 +162,13 @@ export default function HomePage() {
   const { user, loading } = useAuthContext();
 
   const [posts, setPosts] = useState([]);
+
+  const [toggle, setToggle] = useState<boolean>(false);
+
+  const handleToggle = () => {
+    setToggle(!toggle);
+    console.log("Handle Toggle!");
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -234,20 +241,23 @@ export default function HomePage() {
         </button>
       </div>
       {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          text={post.title}
-          date={post.date}
-          createdByName={post.createdByName}
-          createdByEmail={post.createdByEmail}
-          createdByImage={post.createdByPhotoURL}
-          likedBy={post.likedBy}
-          activityID={post.activityID}
-          groupID={post.groupID}
-          comments={post.comments}
-        />
+        <PostCard props={post}/>
       ))}
       <Navbar activeProp={0} />
+      <div className="w-full max-w-md mx-auto fixed bottom-24">
+          <div
+            className="bg-salmon rounded-full w-max h-max p-4 hover:bg-darksalmon duration-200 cursor-pointer absolute right-4 bottom-4"
+            onClick={() => {handleToggle(); //egentlig å sende IDen til gruppa med opprett-innlegg kallet 
+            }}
+          >
+            <img className="w-10" src="/plus-icon.svg" alt="" />
+            
+          </div>
+          <div>
+  {toggle && <CreatePostActual id={""} />}
+    </div>
+
+        </div>
     </div>
   );
 }

@@ -28,8 +28,11 @@ async function getProgram(id: string) {
   console.log(activityDoc.data())
   return activityDoc.data();
 }
+type PostCardProps = {
+  props: Post;
+}
 
-export default function PostCard( props : Post) {
+export default function PostCard({props} : PostCardProps) {
   const { user } = useAuthContext();
 
   getProgram(props.activityID);

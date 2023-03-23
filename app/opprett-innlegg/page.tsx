@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { group } from "console";
 import { useAuthContext } from "context/AuthContext";
+import { Post } from "lib/types";
 
 type createPostProps = {
   id: string
@@ -94,16 +95,8 @@ export const CreatePostActual = ({ id }) => {
     }
 
     console.log("lastet opp ferdig ", { imageAsFile });
-      const docRef = await addDoc(collection(firestoreDB, "posts"), {
-        comments:[],
-        createdByEmail: user.email,
-        createdByName: user.displayName,
-        createdByImage: user.photoURL,
-        date: new Date(),
-        groupID: id,
-        likedBy:[],
-        text: text,
-      });
+      const payload: Post = {id: "", activityID: "", comments: [], createdByEmail: user.email, createdByName: user.displayName, createdByImage: user.photoURL, createdById: user.uid, date: new Date(), groupID:id, likedBy:[], text: text}
+      const docRef = await addDoc(collection(firestoreDB, "posts"), payload);
       console.log("pusher");
       router.push("/grupper");
   };
