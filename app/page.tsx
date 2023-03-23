@@ -30,14 +30,16 @@ export const dynamic = "auto",
   revalidate = 0,
   fetchCache = "auto";
 
-// async function getPosts() {
-//   const myCollection = collection(firestoreDB, "posts");
-//   const querySnapshot = await getDocs(query(myCollection, where("createdByEmail", "!=", "") ));
-//   const myArray = querySnapshot.docs.map((doc) => {
-//     return { id: doc.id, ...doc.data() }; // Add ID to data object
-//   });
-//   return myArray;
-// }
+  async function getPosts() {
+    const myCollection = collection(firestoreDB, "posts");
+    const querySnapshot = await getDocs(query(myCollection));
+    const myArray: Post[] = querySnapshot.docs.map((doc): Post => {
+      return {id: doc.id, activityID: doc.data().activityID, comments:doc.data().comments, createdByEmail: doc.data().createdByEmail, createdByImage: doc.data().createdByImage, createdByName: doc.data().createdByName, createdById: doc.data().createdById, date: doc.data().date, groupID: doc.data().groupID, likedBy: doc.data().likedBy, text: doc.data().text};
+    });
+    console.log('HERRRR');
+    console.log(myArray);
+    return myArray;
+  }
 
 async function getFollowedUsersPosts(currentUserId) {
   // Get the current user's document from the user-collection
@@ -172,7 +174,7 @@ export default function HomePage() {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await getCombinedPosts(user.uid);
+      const result = await getPosts();
       setPosts(result);
       setAllPosts(result);
       console.log("Resultat fra fetch av posts"+result);
@@ -240,8 +242,10 @@ export default function HomePage() {
           Bevegelse
         </button>
       </div>
-      {posts.map((post) => (
-        <PostCard props={post}/>
+      {posts.map((post, index) => (
+        <div key={index}>
+          <PostCard props={post}/>
+        </div>
       ))}
       <Navbar activeProp={0} />
       <div className="w-full max-w-md mx-auto fixed bottom-24">

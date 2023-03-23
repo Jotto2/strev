@@ -41,11 +41,6 @@ export default function PostCard({props} : PostCardProps) {
   const [activity, setActivity] = useState<Activity>(); //TODO add when needed
 
   
-  const [photoURL, setPhotoURL] = useState(post.createdByImage);
-  const [displayName, setDisplayName] = useState(post.createdByName);
-  const [email, setEmail] = useState(post.createdByEmail);
-  const [text, setText] = useState(post.text);
-  
   const [liked, setLiked] = useState(props.likedBy.includes(user.uid));  
   const [likedBy, setLikedBy] = useState(props.likedBy);                 
   const [amountOfLikes, setAmountOfLikes] = useState(props.likedBy.length);
@@ -64,6 +59,7 @@ export default function PostCard({props} : PostCardProps) {
 
 
     const updatedLikedBy = [...post.likedBy, ...post.likedBy.slice(index + 1)];
+    
     await updateDoc(docRef, { likedBy: updatedLikedBy });
 
 
