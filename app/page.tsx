@@ -161,7 +161,7 @@ async function getCombinedPosts(currentUserId) {
 export default function HomePage() {
   const { user, loading } = useAuthContext();
 
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const [toggle, setToggle] = useState<boolean>(false);
 
@@ -175,7 +175,7 @@ export default function HomePage() {
       const result = await getCombinedPosts(user.uid);
       setPosts(result);
       setAllPosts(result);
-      console.log(result);
+      console.log("Resultat fra fetch av posts"+result);
     }
     fetchData();
   }, []); //Infinite loop (TODO ?)

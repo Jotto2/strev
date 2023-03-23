@@ -12,14 +12,16 @@ import { useEffect, useState } from "react";
 async function getActivity(id: string) {
   const activityRef = doc(firestoreDB, "activity", id);
   const activityDoc = await getDoc(activityRef);
-  console.log("Doc fra program id: "+activityDoc.data());
   let exList = [];
-  (activityDoc.data().exerciseList).forEach(item => {
-    exList.push({
-      title: item.title,
-      description: item.description 
-    });
-  });
+  if(activityDoc.data().exerciseList) {
+    
+    (activityDoc.data().exerciseList).forEach(item => {
+      exList.push({
+        title: item.title,
+        description: item.description 
+      });
+    })
+  };
   let retVal: Activity = {
     id: activityDoc.data().id,
     title: activityDoc.data().title,
