@@ -206,23 +206,25 @@ export default function ProfilePage({ params }: any) {
         <h2 className="pt-5 pb-5">
           Aktiviteter laget av {userProfile.name}
         </h2>
-
-        {
-          // if activityList is not empty, map through it and display the activities}
-          activityList.length > 0 ? (
-            activityList.map((activity) => {
-              return (
-                <div className="py-2" key={activity.id}>
-                  <ActivityCard props={activity} />
-                </div>
-              );
-            })
-          ) : (
-            <p className="text-center pt-6">
-              Ingen aktiviteter å vise for denne brukeren
-            </p>
-          )
-        }
+        <div className="pb-32 ">
+          {
+            // if activityList is not empty, map through it and display the activities}
+            activityList.length > 0 ? (
+              activityList.map((activity) => {
+                return (
+                  <div className="py-2" key={activity.id}>
+                    <ActivityCard props={activity} />
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-center pt-6">
+                Ingen aktiviteter å vise for denne brukeren
+              </p>
+            )
+          }
+        </div>
+        
       </div>
 
       <Navbar activeProp={4} />
