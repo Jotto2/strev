@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useRef, useState } from "react";
 import { firestoreDB } from "lib/firebase";
 import {
@@ -40,15 +38,14 @@ export default function PostCard({props} : PostCardProps) {
   const [post, setPost] = useState<Post>();
   const [activity, setActivity] = useState<Activity>(); //TODO add when needed
 
-  
-  const [liked, setLiked] = useState(props.likedBy.includes(user.uid));  
-  const [likedBy, setLikedBy] = useState(props.likedBy);                 
+  const [liked, setLiked] = useState(props.likedBy.includes(user.uid));
+  const [likedBy, setLikedBy] = useState(props.likedBy);
   const [amountOfLikes, setAmountOfLikes] = useState(props.likedBy.length);
   const [comments, setComments] = useState(props.comments);
-  
 
   const commentInput = useRef(null);
   const docRef = doc(firestoreDB, "posts", props.activityID);
+  const postRef = doc(firestoreDB, "posts", props.id);
 
   const handleLike = async () => {
     const newLiked = (post.likedBy.includes(user.uid));
@@ -59,16 +56,16 @@ export default function PostCard({props} : PostCardProps) {
 
 
     const updatedLikedBy = [...post.likedBy, ...post.likedBy.slice(index + 1)];
-    
+
     await updateDoc(docRef, { likedBy: updatedLikedBy });
 
 
     } else {
       //TODO Like
     } //Fetch lengde av array
-    
 
-    await updateDoc(docRef, {
+
+    await updateDoc(postRef, {
       likedBy: newLiked
         ? [...likedBy, user.uid]
         : likedBy.filter((id) => id !== user.uid),
@@ -86,21 +83,19 @@ export default function PostCard({props} : PostCardProps) {
   oldArr.push({commentedByName: user.displayName,
         commentedByImage: user.photoURL,
         text: commentInput.current.value });
+  console.log(oldArr);
   setComments(oldArr);
+  console.log(comments)
 
     commentInput.current.value == ""
       ? null
-      : await updateDoc(docRef, {
-          comments: [
-            ...comments,
-            {
-              commentedByName: user.displayName,
-              commentedByImage: user.photoURL,
-              text: commentInput.current.value,
-            },
-          ],
+      : await updateDoc(postRef, {
+          comments: oldArr,
         });
     commentInput.current.value = "";
+
+    const postDoc = await getDoc(postRef);
+    setComments(postDoc.data().comments);
   };
 
   return (
@@ -153,12 +148,12 @@ export default function PostCard({props} : PostCardProps) {
             <FaComment className="hidden group-hover:block " size="25" />
           </div>
           {comments.length}{" "}
-          {props.comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
+          {comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
         </div>
       </div>
       {comments.length < 1 ? null : (
         <div className="border-b-[1.5px] pt-5 overflow-auto max-h-56">
-          {props.comments.map((comment: any, index) => (
+          {comments.map((comment: any, index) => (
             <div key={index} className="flex items-center gap-5 mb-5">
               <img
                 className="rounded-full h-10"
