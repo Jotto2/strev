@@ -17,7 +17,8 @@ export default function GroupCard({ group }: any) {
 
   return (
     <div className="rounded-2xl bg-white max-w-md mx-auto p-4 drop-shadow-box mt-10">
-      <div className="rounded-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover"></div>
+      {imgUrl ? (<img src={imgUrl} alt="" className="rounded-xl"/>):(<div className="rounded-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover"></div>)}
+      
       <h3 className="text-black text-xl mt-2 truncate font-nunito">{title}</h3>
       <div className="text-black text-md truncate font-lato">{description}</div>
       <div className="grid grid-cols-2 gap-4 pt-3">
