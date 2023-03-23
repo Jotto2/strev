@@ -99,7 +99,7 @@ export default function CreateActivity() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white rounded-xl p-4">
+      <div className="bg-white rounded-xl p-4 mt-16">
         <h2 className="text-lg pt-4 mb-3">Opprett treningsprogram</h2>
         <form onSubmit={create}>
           <label className="w-10">
@@ -306,7 +306,7 @@ export default function CreateActivity() {
           </label>
 
           <button
-            className="bg-salmon text-white text-md rounded-md w-full p-2 "
+            className="bg-salmon text-white text-md rounded-md w-full p-2 hover:bg-darksalmon duration-200"
             type="submit"
           >
             Opprett aktivitet

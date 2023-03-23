@@ -76,28 +76,32 @@ export default function ProgramPage() {
             </div>
       <div className="max-w-md mx-auto">
         <h2 className="pt-5">Mine aktiviteter</h2>
-        {activity.map((item) => {
-          return (
-            <div
-              className="p-3"
-              key={item.id}
-            >
-              <ActivityCard props={item} />
-            </div>
-          );
+        {
+          activity.length == 0 ? <p className="text-center text-darkgrey font-lato text-lg my-5">Du har ikke laget noen aktiviteter enda</p> :
+          activity.map((item) => {
+            return (
+              <div
+                className="p-3"
+                key={item.id}
+              >
+                <ActivityCard props={item} />
+              </div>
+            );
         })}
 
         <h2 className="pt-5">Aktiviteter du følger</h2>
-    
-        {followedActivity.map((item) => {
-          return (
-            <div
-              className="p-3"
-              key={item.id}
-            >
-              <ActivityCard props={item} />
-            </div>
-          );
+
+        {
+          followedActivity.length == 0 ? <p className="text-center text-darkgrey font-lato text-lg my-5">Du følger ingen aktiviteter enda</p> :
+          followedActivity.map((item) => {
+            return (
+              <div
+                className="p-3"
+                key={item.id}
+              >
+                <ActivityCard props={item} />
+              </div>
+            );
         })}
       </div>
       {/* //TODO her må det legges til en liste med aktiviteter brukeren følger */}
