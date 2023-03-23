@@ -20,6 +20,7 @@ import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { FiUser } from "react-icons/fi";
 import { IoInformationCircleSharp } from "react-icons/io5";
 import CreatePostActual from "@/opprett-innlegg/page";
+import PostCard from "@/PostCard";
 
 export async function getGroup(id: string) {
   const activityRef = doc(firestoreDB, "groups", id);
@@ -69,13 +70,21 @@ export default function Group({ params }: any) {
   async function getPosts() {
     const myCollection = collection(firestoreDB, "posts");
     const querySnapshot = await getDocs(
-      query(myCollection, where("partOf", "array-contains", params.id))
+      query(myCollection, where("groupID", "==", params.id))
     );
     const myArray = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
     return myArray;
   }
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const postsData = await getPosts();
+      setPosts(postsData);
+    };
+    fetchPosts();
+  }, []);
 
   //Ordner følging
   useEffect(() => {
@@ -229,7 +238,7 @@ export default function Group({ params }: any) {
         {posts.map((post) => {
           return (
             <div key={post.id} className="p-3">
-              <Post post={post} />
+              <PostCard post={post} />
             </div>
           );
         })}
