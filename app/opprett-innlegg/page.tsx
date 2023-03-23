@@ -94,18 +94,19 @@ export const CreatePostActual = ({ id }) => {
       console.log(error);
     }
 
+
     console.log("lastet opp ferdig ", { imageAsFile });
       const payload: Post = {id: "", activityID: "", comments: [], createdByEmail: user.email, createdByName: user.displayName, createdByImage: user.photoURL, createdById: user.uid, date: new Date(), groupID:id, likedBy:[], text: text}
       const docRef = await addDoc(collection(firestoreDB, "posts"), payload);
       console.log("pusher");
-      router.push("/grupper");
+      router.push("/");
   };
 
   return (
     <div>
       <Navbar activeProp={3} />
       {loader ? (
-        <div>Oppretter innlegget...</div>
+        <div></div>
       ) : (
         <div className="w-full max-w-md mx-auto mt-10 mb-10 bg-background px-4 pb-4">
           <button onClick={() => window.history.back()}>
@@ -162,7 +163,7 @@ export const CreatePostActual = ({ id }) => {
             </label>
           </div>
 
-        <div className="bg-salmon text-white  text-md text-center rounded-md w-full p-2 drop-shadow-box">
+        {/* <div className="bg-salmon text-white  text-md text-center rounded-md w-full p-2 drop-shadow-box">
           <button
             className=""
             type="submit"
@@ -170,7 +171,7 @@ export const CreatePostActual = ({ id }) => {
             Velg treningsprogram
           </button>
           
-          </div>
+          </div> */}
           <br></br>
           <label className="w-10 h-10">
       <textarea
@@ -201,5 +202,6 @@ export const CreatePostActual = ({ id }) => {
     </div>
   );
 }
+
 
 export default CreatePostActual;
