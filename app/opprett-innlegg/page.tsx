@@ -96,7 +96,7 @@ export const CreatePostActual = ({ id }) => {
 
 
     console.log("lastet opp ferdig ", { imageAsFile });
-      const payload: Post = {id: "", activityID: "", comments: [], createdByEmail: user.email, createdByName: user.displayName, createdByImage: user.photoURL, createdById: user.uid, date: new Date(), groupID:id, likedBy:[], text: text}
+      const payload: Post = {id: "", activityID: "7TYIzCV7CSy2kenOgvop", comments: [], createdByEmail: user.email, createdByName: user.displayName, createdByImage: user.photoURL, createdById: user.uid, date: new Date(), groupID:id, likedBy:[], text: text}
       const docRef = await addDoc(collection(firestoreDB, "posts"), payload);
       console.log("pusher");
       router.push("/");
