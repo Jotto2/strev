@@ -20,7 +20,6 @@ import { useAuthContext } from "context/AuthContext";
 import { Activity, Post } from "lib/types";
 
 async function getProgram(id: string) {
-  //! TING SKJER FEIL HER
   console.log("getProgram kjøres");
 
   const activityRef = doc(firestoreDB, "activity", id);
@@ -30,11 +29,7 @@ async function getProgram(id: string) {
   return activityDoc.data();
 }
 
-type PostCardProps = {
-  props: Post
-}
-
-export default function PostCard({ props }: PostCardProps) {
+export default function PostCard( props : Post) {
   const { user } = useAuthContext();
 
   getProgram(props.activityID);
@@ -162,7 +157,7 @@ export default function PostCard({ props }: PostCardProps) {
           {props.comments.length == 1 ? <div>kommentar</div> : <div>kommentarer</div>}
         </div>
       </div>
-      {comments.length == 0 ? null : (
+      {comments.length < 1 ? null : (
         <div className="border-b-[1.5px] pt-5 overflow-auto max-h-56">
           {props.comments.map((comment: any, index) => (
             <div key={index} className="flex items-center gap-5 mb-5">

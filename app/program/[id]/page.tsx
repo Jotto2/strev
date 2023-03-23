@@ -1,5 +1,7 @@
 "use client";
 import Navbar from "components/Navbar";
+import { useAuthContext } from "context/AuthContext";
+import { each } from "cypress/types/jquery";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
@@ -11,7 +13,25 @@ async function getActivity(id: string) {
   const activityRef = doc(firestoreDB, "activity", id);
   const activityDoc = await getDoc(activityRef);
   console.log(activityDoc.data());
-  return activityDoc.data() as Activity;
+  let exList = [];
+  (activityDoc.data().exerciseList).forEach(item => {
+    exList.push({
+      title: item.title,
+      description: item.description 
+    });
+  });
+  let retVal: Activity = {
+    title: activityDoc.data().title,
+    imageURL: activityDoc.data().imageURL,
+    madeByName: activityDoc.data().madeByName,
+    createdBy: activityDoc.data().createdBy,
+    exerciseList: exList,
+    description: activityDoc.data().description,
+    days: activityDoc.data().days,
+    category: activityDoc.data().category
+  };
+  console.log(retVal);
+  return retVal;
 }
 
 interface Activity {
@@ -19,22 +39,30 @@ interface Activity {
   imageURL: string;
   madeByName: string;
   createdBy: string;
-  exerciseList: string[];
+  exerciseList: {
+    description: string,
+    title: string;
+  }[];
   description: string;
   days: string[];
   category: string;
 }
 
 export default function ActivityPage({ params }: any) {
+  const { user } = useAuthContext();
+
   const [activity, setActivity] = useState<Activity>({
     title: "",
     imageURL: "",
     madeByName: "",
     createdBy: "",
-    exerciseList: [],
+    exerciseList: [{
+      description: "",
+      title: ""
+    }],
     description: "",
     days: [],
-    category: "",
+    category: ""
   });
   useEffect(() => {
     async function fetchActivity() {
@@ -46,8 +74,7 @@ export default function ActivityPage({ params }: any) {
   }, []);
 
   const router = useRouter();
-  const auth = getAuth();
-  const user = auth.currentUser;
+  
   const days = [
     "Mandag",
     "Tirsdag",
@@ -126,8 +153,8 @@ export default function ActivityPage({ params }: any) {
           <div className={titleStyling}>Øvelser</div>
           
           <div className="flex flex-col gap-3">
-            {activity.exerciseList.map((exercise) => (
-              <div 
+            {activity.exerciseList.map((exercise, index) => (
+              <div key={index}
               className="flex justify-between items-center w-full gap-4">
                 <img className="w-16 p-3 bg-purple rounded-xl" src="/Lifting-Icon-Transparent.png" alt="" />
             

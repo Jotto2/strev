@@ -12,7 +12,6 @@ import {
   query,
   where,
   updateDoc,
-  arrayContains,
 } from "firebase/firestore";
 import { firestoreDB } from "lib/firebase";
 import React, { useEffect, useState } from "react";
@@ -213,7 +212,7 @@ export default function ProfilePage({ params }: any) {
             </button>
           </div>
         </div>
-        <h2 className="pt-5">Aktiviteter laget av {user.name}</h2>
+        <h2 className="pt-5">Aktiviteter laget av {user.displayName}</h2>
 
         {// if activityList is not empty, map through it and display the activities}
         activityList.length > 0 ? (

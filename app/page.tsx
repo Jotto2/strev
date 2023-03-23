@@ -22,6 +22,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { Post } from "lib/types";
 
 export const dynamic = "auto",
   dynamicParams = true,
@@ -93,7 +94,7 @@ async function getFollowedGroupsPosts(currentUserId) {
   // Fetch the posts from the 'posts' collection using the post IDs
   const postsCollection = collection(firestoreDB, "posts");
   const postsQuerySnapshot = await getDocs(
-    query(postsCollection, where("id", "in", postIds))
+    query(postsCollection, where("id", "in", [postIds]))
   );
 
   // Convert querySnapshot to an array of post objects
@@ -121,7 +122,7 @@ async function getFollowedActivitiesPosts(currentUserId) {
   // Fetch the posts from the 'posts' collection containing an 'activityID' from the followed activities
   const postsCollection = collection(firestoreDB, "posts");
   const postsQuerySnapshot = await getDocs(
-    query(postsCollection, where("activityID", "in", followedActivityIds))
+    query(postsCollection, where("activityID", "in", [followedActivityIds]))
   );
 
   // Convert querySnapshot to an array of post objects
@@ -150,10 +151,10 @@ async function getCombinedPosts(currentUserId) {
   const uniquePostsMap = new Map(combinedPosts.map((post) => [post.id, post]));
   const uniquePostsArray = Array.from(uniquePostsMap.values());
 
-  // Sort the posts by date (newest first)
+  /* Sort the posts by date (newest first)
   uniquePostsArray.sort((a, b) => b.date - a.date);
 
-  console.log(uniquePostsArray);
+  console.log(uniquePostsArray);*/
   return uniquePostsArray;
 }
 
@@ -170,7 +171,7 @@ export default function HomePage() {
       console.log(result);
     }
     fetchData();
-  }, [posts]);
+  }, []); //Infinite loop (TODO ?)
 
   const [allPosts, setAllPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('Alle');
@@ -234,20 +235,15 @@ export default function HomePage() {
       {posts.map((post) => (
         <PostCard
           key={post.id}
-          id={post.id}
-          title={post.title}
-          description={post.description}
+          text={post.title}
           date={post.date}
-          createdBy={post.createdBy}
+          createdByName={post.createdByName}
           createdByEmail={post.createdByEmail}
-          createdByPhotoURL={post.createdByPhotoURL}
+          createdByImage={post.createdByPhotoURL}
           likedBy={post.likedBy}
           activityID={post.activityID}
-          activityName={post.activityName}
-          activityPhotoURL={post.activityPhotoURL}
           groupID={post.groupID}
-          groupName={post.groupName}
-          groupPhotoURL={post.groupPhotoURL}
+          comments={post.comments}
         />
       ))}
       <Navbar activeProp={0} />
