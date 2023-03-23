@@ -18,8 +18,10 @@ function Page() {
 
     // else successful
     console.log(result);
+
     return router.push("/");
   };
+  
   return (
     <div className="h-screen mx-auto relative">
       <img

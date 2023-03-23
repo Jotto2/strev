@@ -3,7 +3,6 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
-
 import { getAuth, Auth } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext, useAuthContext } from "context/AuthContext";
