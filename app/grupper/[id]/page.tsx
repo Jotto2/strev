@@ -41,6 +41,7 @@ interface Group {
   followedBy: Member[];
   id: string;
   createdBy: string;
+  imgUrl?: string;
 }
 
 export default function Group({ params }: any) {
@@ -50,6 +51,7 @@ export default function Group({ params }: any) {
     followedBy: [],
     id: "",
     createdBy: "",
+    imgUrl: "",
   });
 
   const router = useRouter();
@@ -175,7 +177,8 @@ export default function Group({ params }: any) {
           <p className="text-md pl-2 font-nunito">Gå tilbake</p>
         </button>
 
-        <div className="rounded-t-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover"></div>
+        {group.imgUrl ? (<img src={group.imgUrl} className="rounded-xl"></img>) : (<div className="rounded-t-xl w-full h-40 bg-[url('/inspect-placeholder.jpg')] bg-center bg-cover"></div>)}
+        
         {/* Her er all data til headeren*/}
         <div className="bg-white p-5 rounded-b-xl drop-shadow-box">
           <div className="text-xl font-nunito font-bold">{group.title}</div>
