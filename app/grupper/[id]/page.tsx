@@ -14,13 +14,13 @@ import {
 } from "firebase/firestore";
 import { firebase_app, firestoreDB } from "lib/firebase";
 import { useRouter } from "next/navigation";
-import Post from "@/Post";
 import Link from "next/link";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { FiUser } from "react-icons/fi";
 import { IoInformationCircleSharp } from "react-icons/io5";
 import CreatePostActual from "@/opprett-innlegg/page";
 import PostCard from "@/PostCard";
+import { Post } from "lib/types";
 
 export async function getGroup(id: string) {
   const activityRef = doc(firestoreDB, "groups", id);
@@ -43,6 +43,17 @@ interface Group {
   createdBy: string;
   imgUrl?: string;
 }
+
+  //Henter alle postene i en gruppe
+  async function getPosts() {
+    const myCollection = collection(firestoreDB, "posts");
+    const querySnapshot = await getDocs(query(myCollection));
+    const myArray: Post[] = querySnapshot.docs.map((doc): Post => {
+      return {id: doc.id, activityID: doc.data().activityID, comments:doc.data().comments, createdByEmail: doc.data().createdByEmail, createdByImage: doc.data().createdByImage, createdByName: doc.data().createdByName, createdById: doc.data().createdById, date: doc.data().date, groupID: doc.data().groupID, likedBy: doc.data().likedBy, text: doc.data().text};
+    });
+    console.log(myArray);
+    return myArray;
+  }
 
 export default function Group({ params }: any) {
   const [group, setGroup] = useState<Group>({
@@ -68,22 +79,12 @@ export default function Group({ params }: any) {
     console.log("Handle Toggle!");
   }
 
-  //Henter alle postene i en gruppe
-  async function getPosts() {
-    const myCollection = collection(firestoreDB, "posts");
-    const querySnapshot = await getDocs(
-      query(myCollection, where("groupID", "==", params.id))
-    );
-    const myArray = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
-    });
-    return myArray;
-  }
+
 
   useEffect(() => {
     const fetchPosts = async () => {
       const postsData = await getPosts();
-      setPosts(postsData);
+      setPosts(postsData.reverse());
     };
     fetchPosts();
   }, []);
@@ -238,10 +239,10 @@ export default function Group({ params }: any) {
 
         {/* Her er alle postene i gruppen. De er hentet som poster*/}
         {/* BYTT UT MED PostCard! */}
-        {posts.map((post) => {
+        {posts.map((item) => {
           return (
-            <div key={post.id} className="p-3">
-              <PostCard props={post}/>
+            <div key={item.id} className="p-3">
+              <PostCard props={item}/>
             </div>
           );
         })}
