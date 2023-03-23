@@ -112,9 +112,9 @@ export default function StreakComponent() {
           <div className="flex items-center justify-center w-42 h-10">
             <GoFlame size={24} color="white" />
             <div className="pl-3 text-white">
-            {displayArray.length} 
+            {displayArray.length}
             </div>
-            <h1 className="font-normal pl-3 text-white pr-3"> dager på rad</h1>
+            <h1 className="font-normal pl-3 text-white pr-3"> {displayArray.length == 1 ? 'dag' : 'dager'} på rad</h1>
           </div>
           <div className="flex items-center justify-center text-white text-lg font-medium ml-1 absolute left-16 top-5">
             <div></div>
