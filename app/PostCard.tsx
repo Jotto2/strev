@@ -43,14 +43,14 @@ export default function PostCard( props : Post) {
   const [email, setEmail] = useState(post.createdByEmail);
   const [text, setText] = useState(post.text);
   
-  const [liked, setLiked] = useState(post.likedBy.includes(user.uid));  
-  const [likedBy, setLikedBy] = useState(post.likedBy);                 
-  const [amountOfLikes, setAmountOfLikes] = useState(post.likedBy.length);
-  const [comments, setComments] = useState(post.comments);
+  const [liked, setLiked] = useState(props.likedBy.includes(user.uid));  
+  const [likedBy, setLikedBy] = useState(props.likedBy);                 
+  const [amountOfLikes, setAmountOfLikes] = useState(props.likedBy.length);
+  const [comments, setComments] = useState(props.comments);
   
 
   const commentInput = useRef(null);
-  const docRef = doc(firestoreDB, "posts", post.activityID);
+  const docRef = doc(firestoreDB, "posts", props.activityID);
 
   const handleLike = async () => {
     const newLiked = (post.likedBy.includes(user.uid));
