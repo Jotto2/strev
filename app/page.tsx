@@ -22,6 +22,7 @@ import {
   where,
 } from "firebase/firestore";
 import { Post } from "lib/types";
+import StreakComponent from "./streak/StreakComponent";
 
 export const dynamic = "auto",
   dynamicParams = true,
@@ -173,63 +174,64 @@ export default function HomePage() {
   }, []); //Infinite loop (TODO ?)
 
   const [allPosts, setAllPosts] = useState([]);
-  const [selectedFilter, setSelectedFilter] = useState('Alle');
+  const [selectedFilter, setSelectedFilter] = useState("Alle");
 
   const filterPostsByActivityName = (activityName) => {
     console.log(activityName);
     setSelectedFilter(activityName);
-    if (activityName === 'Alle') {
+    if (activityName === "Alle") {
       setPosts(allPosts);
     } else {
-      const filteredPosts = allPosts.filter(post => post.activityName === activityName);
+      const filteredPosts = allPosts.filter(
+        (post) => post.activityName === activityName
+      );
       setPosts(filteredPosts);
     }
   };
 
-  const buttonStyle = (activityName) => (
+  const buttonStyle = (activityName) =>
     selectedFilter === activityName
-      ? { backgroundColor: 'salmon', color: 'white' }
-      : {}
-  );
+      ? { backgroundColor: "salmon", color: "white" }
+      : {};
 
   return (
     <div className="pb-32">
       <div className="w-full mx-auto flex justify-center pt-5">
-        
-        
+        <div>
+          <StreakComponent />
+        </div>
         <button
           type="button"
           className="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-          onClick={() => filterPostsByActivityName('Alle') }
-          style={buttonStyle('Alle')}
+          onClick={() => filterPostsByActivityName("Alle")}
+          style={buttonStyle("Alle")}
         >
           Alle
         </button>
         <button
           type="button"
           className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-          onClick={() => filterPostsByActivityName('Styrke')}
-          style={buttonStyle('Styrke')}
+          onClick={() => filterPostsByActivityName("Styrke")}
+          style={buttonStyle("Styrke")}
         >
           Styrke
         </button>
         <button
           type="button"
           className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-          onClick={() => filterPostsByActivityName('Cardio')}
-          style={buttonStyle('Cardio')}
+          onClick={() => filterPostsByActivityName("Cardio")}
+          style={buttonStyle("Cardio")}
         >
           Cardio
         </button>
         <button
           type="button"
           className="relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
-          onClick={() => filterPostsByActivityName('Bevegelse')}
-          style={buttonStyle('Bevegelse')}
+          onClick={() => filterPostsByActivityName("Bevegelse")}
+          style={buttonStyle("Bevegelse")}
         >
           Bevegelse
         </button>
-  
       </div>
       {posts.map((post) => (
         <PostCard
