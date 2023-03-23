@@ -4,12 +4,13 @@ import getCollection from "firestore/getData";
 import { getFirestore } from "firebase/firestore";
 import { firebase_app, firestoreDB } from "lib/firebase";
 import Link from "next/link";
-import ActivityCard, { Activity } from "@/program/ActivityCard";
+import ActivityCard from "@/program/ActivityCard";
 import Navbar from "components/Navbar";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { BiSearch } from "react-icons/bi";
 import { useAuthContext } from "context/AuthContext";
+import { Activity } from "lib/types";
 
 export const dynamic = "auto",
   dynamicParams = true,
@@ -60,7 +61,7 @@ export default function ProgramPage() {
             className="p-3"
             key={index}
           >
-            <ActivityCard activity={activity} />
+            <ActivityCard props={activity} />
           </div>
         );
       })}
