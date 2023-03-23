@@ -111,7 +111,7 @@ export default function ActivityCard({props}: ActivityCardProps) {
         <div className="grid grid-cols-2 pt-3 pb-2 pl-5 pr-1">
           <h4 className="text-white text-sm">{props.followedBy.length} følgere</h4>
           <div className="flex justify-end pr-2">
-            <h3 className="bg-yellow-100 rounded-full px-5 text-sm text-right">
+            <h3 className="bg-yellow rounded-full px-5 text-sm text-right">
               Delt
             </h3>
           </div>

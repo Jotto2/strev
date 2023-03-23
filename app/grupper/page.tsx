@@ -49,9 +49,6 @@ export default function GruppeSide() {
             <img src="./AddButton.png" className="h-8"></img>
           </div>
         </button>
-        <div className="ml-2 text-black text-xl bg-background">
-          Mine grupper
-        </div>
 
         {gruppe.map((gruppe) => {
           return (
