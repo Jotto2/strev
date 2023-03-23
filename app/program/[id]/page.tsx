@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 async function getActivity(id: string) {
   const activityRef = doc(firestoreDB, "activity", id);
   const activityDoc = await getDoc(activityRef);
-  console.log(activityDoc.data());
+  console.log("Doc fra program id: "+activityDoc.data());
   let exList = [];
   (activityDoc.data().exerciseList).forEach(item => {
     exList.push({
@@ -21,6 +21,7 @@ async function getActivity(id: string) {
     });
   });
   let retVal: Activity = {
+    id: activityDoc.data().id,
     title: activityDoc.data().title,
     imageURL: activityDoc.data().imageURL,
     madeByName: activityDoc.data().madeByName,
@@ -35,6 +36,7 @@ async function getActivity(id: string) {
 }
 
 interface Activity {
+  id: string,
   title: string;
   imageURL: string;
   madeByName: string;
@@ -52,6 +54,7 @@ export default function ActivityPage({ params }: any) {
   const { user } = useAuthContext();
 
   const [activity, setActivity] = useState<Activity>({
+    id: "",
     title: "",
     imageURL: "",
     madeByName: "",
@@ -64,12 +67,13 @@ export default function ActivityPage({ params }: any) {
     days: [],
     category: ""
   });
+
+  async function fetchActivity() {
+    const data = await getActivity(params.id);
+    setActivity(data);
+  }
+
   useEffect(() => {
-    async function fetchActivity() {
-      const data = await getActivity(params.id);
-      setActivity(data);
-      console.log(data);
-    }
     fetchActivity();
   }, []);
 

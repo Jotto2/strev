@@ -26,17 +26,20 @@ export default function ProgramPage() {
 
   async function getProgram() {
     const myCollection = collection(firestoreDB, "activity");
-    const querySnapshot = await getDocs(query(myCollection, where("createdBy", "!=", user.uid), where("isPublic", "==", true)));
-    const myArray:Activity[] = [];
-    querySnapshot.forEach((doc) => {
-      myArray.push( doc.data() as Activity);
+    const querySnapshot = await getDocs(
+      query(myCollection, where("createdBy", "==", user.uid))
+    );
+    const myArray: Activity[] = querySnapshot.docs.map((doc): Activity => {
+      console.log("Dette er doc: "+doc)
+      return {id: doc.id, title: doc.data().title, category: doc.data().category, description: doc.data().description, createdBy: doc.data().createdBy, imageURL: doc.data().imageURL, madeByName: doc.data().madeByName, followedBy: doc.data().followedBy, isPublic: doc.data().isPublic}
     });
+    console.log(myArray);
     return myArray;
   }
 
   useEffect(() => {
     async function fetchData() {
-      const result:Activity[] = await getProgram();
+      const result = await getProgram();
       setActivity(result);
     }
     fetchData();
