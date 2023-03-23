@@ -79,16 +79,16 @@ async function getFollowedGroupsPosts(currentUserId) {
   );
 
   // Extract the post IDs from the 'posts' arrays in the fetched documents
-  let postIds = [];
+  let postIdArray = [];
   groupsQuerySnapshot.docs.forEach((doc) => {
     const groupData = doc.data();
     if (Array.isArray(groupData.posts)) {
-      postIds.push(...groupData.posts);
+      postIdArray.push(...groupData.posts);
     }
   });
 
   // Remove duplicate post IDs
-  postIds = Array.from(new Set(postIds));
+  let postIds = Array.from(new Set(postIdArray));
 
   // Fetch the posts from the 'posts' collection using the post IDs
   const postsCollection = collection(firestoreDB, "posts");
