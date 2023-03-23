@@ -28,14 +28,13 @@ async function getProgram(id: string) {
   console.log(activityDoc.data())
   return activityDoc.data();
 }
+
 type PostCardProps = {
   props: Post;
 }
 
 export default function PostCard({props} : PostCardProps) {
   const { user } = useAuthContext();
-
-  getProgram(props.activityID);
 
   const [post, setPost] = useState<Post>();
   const [activity, setActivity] = useState<Activity>(); //TODO add when needed
@@ -49,6 +48,11 @@ export default function PostCard({props} : PostCardProps) {
 
   const commentInput = useRef(null);
   const docRef = doc(firestoreDB, "posts", props.activityID);
+
+  const updateActivity = async() => {
+    const result  = await getProgram(props.activityID)
+    setActivity(result as Activity);
+  }
 
   const handleLike = async () => {
     const newLiked = (post.likedBy.includes(user.uid));
@@ -103,6 +107,10 @@ export default function PostCard({props} : PostCardProps) {
     commentInput.current.value = "";
   };
 
+  useEffect(() => {
+    updateActivity();
+  }, [])
+
   return (
     <div className="bg-white rounded-xl p-4 max-w-md mx-auto drop-shadow-box mt-20">
       <div className="flex gap-5 items-center mb-5">
@@ -115,10 +123,9 @@ export default function PostCard({props} : PostCardProps) {
       <div className="mb-5 font-lato">{props.text}</div>
 
       <div className="mb-5">
-        {
-          /*
-          <ActivityCard activity={activity} />
-        */}
+        { activity &&
+          <ActivityCard props={activity} />
+        }
       </div>
 
       <div className="flex items-center gap-7 font-nunito font-semibold border-b-[1.5px] pb-5">
