@@ -10,7 +10,7 @@ export default function Profil() {
   const user = auth.currentUser;
 
   const handleLogOut = () => {
-    // TODO logikk for å logge ut
+    window.location.href = "/logg-inn";
   };
 
   return (
