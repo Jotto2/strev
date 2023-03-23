@@ -13,12 +13,12 @@ async function getActivity(id: string) {
   const activityRef = doc(firestoreDB, "activity", id);
   const activityDoc = await getDoc(activityRef);
   let exList = [];
-  if(activityDoc.data().exerciseList) {
-    
-    (activityDoc.data().exerciseList).forEach(item => {
+  if(activityDoc.data().exList) {
+    (activityDoc.data().exList).forEach(item => {
+      console.log(item)
       exList.push({
         title: item.title,
-        description: item.description 
+        description: item.description
       });
     })
   };
