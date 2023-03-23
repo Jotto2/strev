@@ -13,14 +13,17 @@ import { firestoreDB, storage } from "lib/firebase";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { group } from "console";
+import { useAuthContext } from "context/AuthContext";
 
 type createPostProps = {
   id: string
 }
 
-export default function CreatePost({id}) {
+export const CreatePostActual = ({ id }) => {
   const router = useRouter();
   //const [title, setTitle] = useState("");
+
+  const { user } = useAuthContext();
 
 
   const [text, setText] = useState("");
@@ -31,9 +34,6 @@ export default function CreatePost({id}) {
     setText(value.slice(0, 100)); // Limit to max 100 characters
     setCharCount(count);
   };
-
-  const auth = getAuth();
-  const user = auth.currentUser;
   const [imgUrl, setImgUrl] = useState('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [progresspercent, setProgresspercent] = useState(0);
@@ -59,7 +59,7 @@ export default function CreatePost({id}) {
     setLoader(true);
     const file = selectedFile;
 
-    console.log(file);
+    console.log("Dette er ID til gruppa vi oppretter post i: "+id);
 
     try {
       const storageRef = ref(storage, `files/${file.name}`);
@@ -95,16 +95,14 @@ export default function CreatePost({id}) {
 
     console.log("lastet opp ferdig ", { imageAsFile });
       const docRef = await addDoc(collection(firestoreDB, "posts"), {
-        comments:{},
+        comments:[],
         createdByEmail: user.email,
         createdByName: user.displayName,
         createdByImage: user.photoURL,
         date: new Date(),
         groupID: id,
         likedBy:[],
-        text: "",
-        
-        
+        text: text,
       });
       console.log("pusher");
       router.push("/grupper");
@@ -210,3 +208,5 @@ export default function CreatePost({id}) {
     </div>
   );
 }
+
+export default CreatePostActual;

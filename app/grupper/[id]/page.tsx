@@ -19,7 +19,7 @@ import Link from "next/link";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { FiUser } from "react-icons/fi";
 import { IoInformationCircleSharp } from "react-icons/io5";
-import CreatePost from "@/opprett-innlegg/page";
+import CreatePostActual from "@/opprett-innlegg/page";
 
 export async function getGroup(id: string) {
   const activityRef = doc(firestoreDB, "groups", id);
@@ -245,7 +245,7 @@ export default function Group({ params }: any) {
             
           </div>
           <div>
-  {toggle && <CreatePost id = {group.id} />}
+  {toggle && <CreatePostActual id={params.id} />}
     </div>
 
         </div>
