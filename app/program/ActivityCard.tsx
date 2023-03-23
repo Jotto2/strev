@@ -26,20 +26,11 @@ export type Activity = {
   isPublic: boolean;
 }
 
-type ActivityProps = {
-  id,
-  title,
-  category,
-  description,
-  createdBy,
-  imageURL,
-  madeByName,
-  followedBy,
-  isPublic,
+type ActivityCardProps = {
+  props: Activity;
 }
 
-
-export default function ActivityCard( props : Activity ) {
+export default function ActivityCard({props}: ActivityCardProps) {
   //Her må bilde også importeres
 
   const { user } = useAuthContext();
