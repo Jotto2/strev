@@ -20,11 +20,12 @@ import router from "next/router";
 import Group from "../page";
 import { useAuthContext } from "context/AuthContext";
 
-export async function getGroup(id: string) {
+export async function getGroup(id: string): Promise<Group> {
   const activityRef = doc(firestoreDB, "groups", id);
   const activityDoc = await getDoc(activityRef);
   return activityDoc.data() as Group;
 }
+
 
 interface Member {
   uid: string,
@@ -47,16 +48,14 @@ export default function Members({ params }: any) {
 
   const { user } = useAuthContext();
 
-  const [group, setGroup] = useState({
+  const [group, setGroup] = useState<Group>({
     //! type GROUP funka ikke her
     title: "",
     description: "",
-    followedBy: [],
+    followedBy: [] as Member[],
     id: "",
     createdBy: "",
   });
-
-  const [members, setMembers] = useState<Member[]>([]);
 
   const router = useRouter();
 
